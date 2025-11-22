@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrancoFantomius</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f7f7f7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        
+        /* --- UI STYLES --- */
+        #menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 44px; /* Larghezza fissa per l'icona */
+            height: 44px;
+            padding: 0; /* Rimosso il padding per centrare l'icona */
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px solid #444;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            color: #00ff88;
+            /* Rimossi stili font non più necessari per l'icona */
+        }
+        #menu-btn:hover {
+            background: rgba(50, 50, 50, 1);
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+        /* Stile per l'icona SVG */
+        #menu-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor; /* Usa il colore del testo del genitore */
+            stroke-width: 2;
+            fill: none;
+        }
+
+        #ui-container {
+            position: absolute;
+            top: 75px; 
+            left: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            width: 280px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            color: white;
+            transform-origin: top left;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            visibility: visible;
+            z-index: 1000;
+        }
+        #ui-container.hidden {
+            opacity: 0;
+            transform: scale(0.95) translateY(-10px);
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 18px;
+            margin: 0 0 15px 0;
+            text-align: center;
+            color: #00ff88;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .control-group { margin-bottom: 15px; }
+        label { display: flex; justify-content: space-between; align-items: center; font-size: 14px; margin-bottom: 5px; color: #eee; }
+        
+        /* Color Picker Style */
+        input[type="color"] { -webkit-appearance: none; border: none; width: 32px; height: 32px; cursor: pointer; background: none; padding: 0; }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 4px rgba(0,0,0,0.3); }
+        
+        .checkbox-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        
+        /* Round Checkbox Style */
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 4px rgba(0,0,0,0.3);
+            transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+            flex-shrink: 0; 
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+            border-color: #fff;
+        }
+        
+        input[type="checkbox"]:hover {
+            transform: scale(1.1);
+        }
+
+        #stats { margin-top: 15px; font-size: 12px; color: #aaa; text-align: center; border-top: 1px solid #555; padding-top: 10px; }
+        .loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; pointer-events: none; display: none; color: #333; font-weight: bold; }
+        .color-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+        /* --- MARKER AND INFO BOX STYLES --- */
+        #markers-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+        .marker-wrapper { position: absolute; display: flex; flex-direction: column; align-items: center; transform: translate(-50%, -16px); z-index: 500; pointer-events: none; transition: transform 0.1s; }
+        .marker-btn { width: 32px; height: 32px; background: rgba(0, 255, 136, 0.9); border: 2px solid white; border-radius: 50%; color: #003322; font-weight: bold; font-size: 24px; display: flex; align-items: center; justify-content: center; line-height: 0; padding-bottom: 3px; cursor: pointer; pointer-events: auto; box-shadow: 0 0 10px rgba(0, 255, 136, 0.5); transition: transform 0.3s, background 0.3s; }
+        .marker-btn:hover { background: white; transform: scale(1.15); box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+        .marker-label { margin-top: 4px; font-size: 11px; font-weight: 600; color: #333; background: rgba(255, 255, 255, 0.85); padding: 2px 6px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: nowrap; pointer-events: auto; backdrop-filter: blur(2px); }
+        
+        #info-card { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 300px; background: white; border-radius: 16px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); text-align: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #info-card.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        #info-card h2 { margin: 0 0 15px 0; color: #333; font-size: 20px; }
+        
+        /* Card body text style */
+        #info-card p { color: #555; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
+        
+        .btn-link { display: inline-block; background: #0044aa; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: background 0.2s; }
+        .btn-link:hover { background: #003388; }
+        .close-card { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #999; }
+        .close-card:hover { color: #333; }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <button id="menu-btn" title="Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.85,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+        </svg>
+    </button>
+
+    <div id="ui-container">
+        <h1>Settings</h1>
+        <div class="control-group">
+            <div class="color-row">
+                <label for="color-picker" style="margin: 0;">Base Color</label>
+                <input type="color" id="color-picker" value="#0044aa">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="checkbox-container">
+                Auto Rotation
+                <input type="checkbox" id="rotate-check">
+            </label>
+        </div>
+        <div id="stats">
+            Tetrahedrons: <span id="count-val">4</span>
+        </div>
+    </div>
+
+    <div id="markers-layer"></div>
+
+    <div id="info-card">
+        <div class="close-card">&times;</div>
+        <h2 id="card-title">Title</h2>
+        <p id="card-body"></p>
+        <a id="card-link" href="#" target="_blank" class="btn-link">Go to Link</a>
+    </div>
+
+    <div id="loading-msg" class="loading">Generating Fractal...</div>
+    <div id="canvas-container"></div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- JSON DATA ---
+        // Translated to English
+        const pointsData = [
+            { 
+                title: "GitHub Repository", 
+                link: "https://github.com//FrancoFantomius/francofantomius.github.io", 
+                short: "GitHub",
+                body: "Explore the source code of this project and contribute to its development on GitHub."
+            },
+            { 
+                title: "Wikipedia: Sierpiński triangle", 
+                link: "https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle", 
+                short: "Sierpiński triangle",
+                body: "The Sierpiński triangle is a fractal with the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles."
+            },
+            { 
+                title: "Contact Me", 
+                link: "mailto:mail@francofantomius.com", 
+                short: "Email", 
+                body: "Do you have questions or collaboration proposals? Send me an email!" 
+            }
+        ];
+
+        let scene, camera, renderer, controls;
+        let mesh; 
+        let geometry, material;
+        let markers = []; 
+        
+        const params = {
+            depth: 1, 
+            color: '#0044aa',
+            autoRotate: false, 
+            size: 40
+        };
+
+        const menuBtn = document.getElementById('menu-btn');
+        const uiContainer = document.getElementById('ui-container');
+        const colorPicker = document.getElementById('color-picker');
+        const rotateCheck = document.getElementById('rotate-check');
+        const countVal = document.getElementById('count-val');
+        const markersLayer = document.getElementById('markers-layer');
+        const infoCard = document.getElementById('info-card');
+        const cardTitle = document.getElementById('card-title');
+        const cardBody = document.getElementById('card-body'); 
+        const cardLink = document.getElementById('card-link');
+        const closeCard = document.querySelector('.close-card');
+
+        menuBtn.addEventListener('click', () => {
+            uiContainer.classList.toggle('hidden');
+        });
+
+        closeCard.addEventListener('click', () => {
+            infoCard.classList.remove('active');
+            if (params.autoRotate) controls.autoRotate = true;
+        });
+
+        const baseTetrahedron = new THREE.TetrahedronGeometry(1);
+        const tVerts = [
+            new THREE.Vector3(1, 1, 1),
+            new THREE.Vector3(-1, -1, 1),
+            new THREE.Vector3(-1, 1, -1),
+            new THREE.Vector3(1, -1, -1)
+        ];
+
+        init();
+        animate();
+
+        function init() {
+            const container = document.getElementById('canvas-container');
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf7f7f7);
+            scene.fog = new THREE.Fog(0xf7f7f7, 50, 150);
+
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 40, 80);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = params.autoRotate;
+            controls.autoRotateSpeed = 2.0;
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.5); 
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
+            dirLight.position.set(10, 20, 10);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+
+            const pointLight = new THREE.PointLight(0x00aaff, 1, 100);
+            pointLight.position.set(-10, -10, -10);
+            scene.add(pointLight);
+
+            geometry = new THREE.TetrahedronGeometry(1); 
+            
+            updateMaterial();
+            generateFractal();
+            createMarkers();
+
+            startLevelCycle();
+
+            window.addEventListener('resize', onWindowResize);
+            
+            colorPicker.addEventListener('input', (e) => {
+                params.color = e.target.value;
+                updateMaterial();
+            });
+
+            rotateCheck.addEventListener('change', (e) => {
+                params.autoRotate = e.target.checked;
+                controls.autoRotate = params.autoRotate;
+                if (!infoCard.classList.contains('active')) {
+                   // Logic handled in animate loop
+                }
+            });
+        }
+
+        function getFractalVertices(targetDepth) {
+            const positions = [];
+
+            function traverse(center, radius, currentLevel) {
+                if (currentLevel === targetDepth) {
+                    for (let i = 0; i < 4; i++) {
+                        const vertexPos = tVerts[i].clone().normalize().multiplyScalar(radius).add(center);
+                        positions.push(vertexPos);
+                    }
+                    return;
+                }
+
+                const nextRadius = radius / 2;
+                for (let i = 0; i < 4; i++) {
+                    const offset = tVerts[i].clone().normalize().multiplyScalar(radius / 2);
+                    traverse(center.clone().add(offset), nextRadius, currentLevel + 1);
+                }
+            }
+
+            traverse(new THREE.Vector3(0,0,0), 1, 0);
+            return positions;
+        }
+
+        function createMarkers() {
+            markersLayer.innerHTML = '';
+            markers = [];
+
+            const totalNeeded = pointsData.length;
+            const availablePositions = [];
+            
+            const maxSearchDepth = 3; 
+            
+            for (let d = 0; d <= maxSearchDepth; d++) {
+                const levelPoints = getFractalVertices(d);
+                
+                for (let point of levelPoints) {
+                    let isDuplicate = false;
+                    
+                    for (let existing of availablePositions) {
+                        if (point.distanceTo(existing) < 0.01) {
+                            isDuplicate = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!isDuplicate) {
+                        availablePositions.push(point);
+                    }
+                }
+
+                if (availablePositions.length >= totalNeeded) {
+                    break;
+                }
+            }
+
+            pointsData.forEach((data, index) => {
+                if (index >= availablePositions.length) return;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'marker-wrapper';
+
+                const btn = document.createElement('div');
+                btn.className = 'marker-btn';
+                btn.innerText = '+';
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showInfoCard(data);
+                });
+                wrapper.appendChild(btn);
+
+                if (data.short) {
+                    const label = document.createElement('div');
+                    label.className = 'marker-label';
+                    label.innerText = data.short;
+                    wrapper.appendChild(label);
+                }
+
+                markersLayer.appendChild(wrapper);
+
+                markers.push({
+                    element: wrapper, 
+                    baseVector: availablePositions[index] 
+                });
+            });
+        }
+
+        function showInfoCard(data) {
+            cardTitle.innerText = data.title;
+            
+            // Handle body text
+            if (data.body) {
+                cardBody.innerText = data.body;
+                cardBody.style.display = 'block';
+            } else {
+                cardBody.style.display = 'none';
+            }
+
+            cardLink.href = data.link;
+            infoCard.classList.add('active');
+            
+            if (params.autoRotate) {
+                controls.autoRotate = false;
+            }
+        }
+
+        function updateMarkers() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const widthHalf = width / 2;
+            const heightHalf = height / 2;
+
+            markers.forEach(marker => {
+                const pos = marker.baseVector.clone().multiplyScalar(params.size);
+                pos.project(camera);
+
+                if (pos.z > 1) {
+                    marker.element.style.display = 'none';
+                } else {
+                    marker.element.style.display = 'flex'; 
+                    
+                    const x = (pos.x * widthHalf) + widthHalf;
+                    const y = -(pos.y * heightHalf) + heightHalf;
+
+                    marker.element.style.left = `${x}px`;
+                    marker.element.style.top = `${y}px`;
+                }
+            });
+        }
+
+        function startLevelCycle() {
+            let direction = 1;
+
+            setInterval(() => {
+                params.depth += direction;
+
+                if (params.depth >= 7) {
+                    params.depth = 7;
+                    direction = -1;
+                } else if (params.depth <= 1) {
+                    params.depth = 1;
+                    direction = 1;
+                }
+
+                requestAnimationFrame(() => {
+                    generateFractal();
+                });
+
+            }, 2000); 
+        }
+
+        function updateMaterial() {
+            if (mesh) scene.remove(mesh);
+            
+            material = new THREE.MeshStandardMaterial({
+                color: new THREE.Color(params.color),
+                roughness: 0.3,
+                metalness: 0.5,
+                flatShading: true
+            });
+            
+            generateFractal();
+        }
+
+        function generateFractal() {
+            if (mesh) {
+                scene.remove(mesh);
+                mesh.dispose();
+            }
+
+            const count = Math.pow(4, params.depth);
+            countVal.innerText = count.toLocaleString();
+
+            mesh = new THREE.InstancedMesh(geometry, material, count);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+
+            const dummy = new THREE.Object3D();
+            let index = 0;
+
+            function recurse(center, radius, currentDepth) {
+                if (currentDepth === 0) {
+                    dummy.position.copy(center);
+                    dummy.scale.set(radius, radius, radius);
+                    dummy.updateMatrix();
+                    mesh.setMatrixAt(index++, dummy.matrix);
+                    return;
+                }
+
+                const nextRadius = radius / 2;
+                const nextDepth = currentDepth - 1;
+                
+                for (let i = 0; i < 4; i++) {
+                    const offset = tVerts[i].clone().normalize().multiplyScalar(radius / 2);
+                    const newCenter = center.clone().add(offset);
+                    recurse(newCenter, nextRadius, nextDepth);
+                }
+            }
+
+            recurse(new THREE.Vector3(0, 0, 0), params.size, params.depth);
+
+            mesh.instanceMatrix.needsUpdate = true;
+            scene.add(mesh);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            updateMarkers();
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
