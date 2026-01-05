@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaTeX - FrancoFantomius</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <button id="menu-btn" title="Settings">
+        <img src="icons/settings.svg" alt="Settings">
+    </button>
+
+    <a href="index.html" class="btn-link"
+        style="position: absolute; top: 20px; right: 20px; z-index: 1001; background: rgba(30, 30, 30, 0.9); border: 1px solid #444;">Home</a>
+
+    <div id="ui-container">
+        <h1>Settings</h1>
+        <div class="control-group">
+            <div class="color-row">
+                <label for="color-picker" style="margin: 0;">Base Color</label>
+                <input type="color" id="color-picker" value="#22d3ee">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="checkbox-container">
+                Auto Rotation
+                <input type="checkbox" id="rotate-check">
+            </label>
+        </div>
+        <div id="stats">
+            Cubes: <span id="count-val">0</span>
+        </div>
+        <a href="boring_latex.html" class="btn-link"
+            style="display: block; margin-top: 15px; text-align: center;">Boring Mode</a>
+    </div>
+
+    <div id="markers-layer"></div>
+
+    <div id="info-card">
+        <div class="close-card">&times;</div>
+        <h2 id="card-title">Title</h2>
+        <p id="card-body"></p>
+        <a id="card-link" href="#" target="_blank" class="btn-link">Go to Link</a>
+    </div>
+
+    <div id="loading-msg" class="loading">Generating Fractal...</div>
+    <div id="canvas-container"></div>
+
+    <script type="module" src="latex.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+%% styles.sty
+%% https://francofantomius.com/latex/styles.sty
+
+% ===== Page style =====
+% thin margins (comment to disable)
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+% ===== Styles for theorems =====
+\newtheoremstyle{defstyle}
+  {5pt}{5pt}% space above and below
+  {\normalfont}% normal font
+  {}%
+  {\bfseries}% bold title
+  {}% no punctuation
+  {\newline}% new line after title
+  {}%
+
+\newtheoremstyle{classicstyle}
+  {3pt}{5pt}% space above and below
+  {\itshape}% italic font
+  {}%
+  {\bfseries}% bold title
+  {.}% point after title
+  { }% space
+  {}%
+
+\newtheoremstyle{modernstyle}
+  {6pt}{6pt}%
+  {\itshape}% italic font
+  {}%
+  {\scshape}% small caps title
+  { — }% long dash after title
+  { }%
+  {}%
+
+\newtheoremstyle{compactstyle}
+  {2pt}{2pt}% space above and below
+  {\normalfont}{}% normal font
+  {\bfseries}{}% bold title
+  {0.5em}% space after title
+  {}%

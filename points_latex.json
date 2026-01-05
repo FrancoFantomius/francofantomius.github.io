@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Menger sponge",
+        "link": "https://en.wikipedia.org/wiki/Menger_sponge/",
+        "short": "Menger sponge",
+        "body": "The Menger sponge is a fractal with the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles."
+    },
+    {
+        "title": "LaTeX Wikibook",
+        "link": "https://en.wikibooks.org/wiki/LaTeX",
+        "short": "Wikibook",
+        "body": "The definitive guide to LaTeX. Comprehensive documentation for all your formatting needs."
+    },
+    {
+        "title": "Detexify",
+        "link": "https://detexify.kirelabs.org/classify.html",
+        "short": "Detexify",
+        "body": "Draw a symbol and get the corresponding LaTeX command. Extremely useful for finding specific symbols."
+    },
+    {
+        "title": "CTAN",
+        "link": "https://www.ctan.org/",
+        "short": "CTAN",
+        "body": "The Comprehensive TEX Archive Network. The central place for all things TeX and LaTeX."
+    },
+    {
+        "title": "Useful MACROS",
+        "link": "https://francofantomius.com/latex/MACROS.sty",
+        "short": "MACROS",
+        "body": "A collection of my most used MACROS in LaTeX. To download the file just save it as MACROS.sty in the same directory of your LaTeX file. To use it you need to add \\usepackage{MACROS} in the preamble."
+    },
+    {
+        "title": "Theorems Styles",
+        "link": "https://francofantomius.com/latex/styles.sty",
+        "short": "Styles",
+        "body": "A list for the styles I use for theorems, lemmas, etc. Note that by default the page has thin margins. To download the file just save it as styles.sty in the same directory of your LaTeX file. To use it you need to add \\usepackage{styles} in the preamble."
+    }
+]
