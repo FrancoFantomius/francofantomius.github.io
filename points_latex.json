@@ -27,12 +27,12 @@
         "title": "Useful MACROS",
         "link": "https://francofantomius.com/latex/MACROS.sty",
         "short": "MACROS",
-        "body": "A collection of my most used MACROS in LaTeX. To use the file just move it to the same directory of your LaTeX file. To use it you need to add \\usepackage{FFMACROS} in the preamble."
+        "body": "A collection of my most used MACROS in LaTeX. To use the file just move it to the same directory of your LaTeX file. To use it you need to add \\usepackage{MACROS} in the preamble."
     },
     {
         "title": "Theorems Styles",
         "link": "https://francofantomius.com/latex/styles.sty",
         "short": "Styles",
-        "body": "A list for the styles I use for theorems, lemmas, etc. Note that by default the page has thin margins. To download the file just move it to the same directory of your LaTeX file. To use it you need to add \\usepackage{FFSTYLES} in the preamble."
+        "body": "A list for the styles I use for theorems, lemmas, etc. Note that by default the page has thin margins. To download the file just move it to the same directory of your LaTeX file. To use it you need to add \\usepackage{STYLES} in the preamble."
     }
 ]
