@@ -2,15 +2,29 @@
 %% https://francofantomius.com/latex/MACROS.sty
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{MACROS}[2026/01/06 v1.0]
+\ProvidesPackage{MACROS}[2026/01/06 v1.0.1]
+
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{amsfonts}
 
 % ====== Personalized Theorems ======
 %\theoremstyle{defstyle} %<---- to use this you also need https://francofantomius.com/latex/styles.sty
 
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{corollary}{Corollary}[chapter]
-\newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{proposition}{Proposition}[chapter]
+% Adapts to the document class (uses chapter if available, otherwise section)
+\ifx\chapter\undefined
+	\newtheorem{theorem}{Theorem}[section]
+	\newtheorem{corollary}{Corollary}[section]
+	\newtheorem{lemma}{Lemma}[section]
+	\newtheorem{proposition}{Proposition}[section]
+\else
+	\newtheorem{theorem}{Theorem}[chapter]
+	\newtheorem{corollary}{Corollary}[chapter]
+	\newtheorem{lemma}{Lemma}[chapter]
+	\newtheorem{proposition}{Proposition}[chapter]
+\fi
+
 \newtheorem*{definition}{Definition}
 \newtheorem*{example}{Example}
 \newtheorem{remark}{Remark}[section]
@@ -38,9 +52,14 @@
 \newcommand{\F}{\vec{F}}
 
 \newcommand{\jvec}{\vec{\jmath}}
+
+% Securely define \vnabla
+\providecommand{\vnabla}{}
 \renewcommand{\vnabla}{\vec{\nabla}}
 
 \newcommand{\vel}{\vec{v}}
 \newcommand{\acc}{\vec{a}}
 
 \newcommand{\en}{\mathcal{E}}
+
+\endinput

@@ -33,6 +33,6 @@
         "title": "Theorems Styles",
         "link": "https://francofantomius.com/latex/styles.sty",
         "short": "Styles",
-        "body": "A list for the styles I use for theorems, lemmas, etc. Note that by default the page has thin margins. To download the file just move it to the same directory of your LaTeX file. To use it you need to add \\usepackage{STYLES} in the preamble."
+        "body": "A list for the styles I use for theorems, lemmas, etc. Note that by default the page has thin margins. To download the file just move it to the same directory of your LaTeX file. To use it you need to add \\usepackage{styles} in the preamble."
     }
 ]

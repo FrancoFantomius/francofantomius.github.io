@@ -2,11 +2,14 @@
 %% https://francofantomius.com/latex/styles.sty
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{STYLES}[2026/01/06 v1.0]
+\ProvidesPackage{styles}[2026/01/06 v1.0.1]
+
+% ===== Dependencies =====
+\RequirePackage{amsthm} % Required for \newtheoremstyle
+\RequirePackage{geometry}
 
 % ===== Page style =====
 % thin margins (comment to disable)
-\usepackage{geometry}
 \geometry{margin=2.5cm}
 
 % ===== Styles for theorems =====
@@ -43,3 +46,5 @@
 {\bfseries}{}% bold title
 {0.5em}% space after title
 {}%
+
+\endinput
