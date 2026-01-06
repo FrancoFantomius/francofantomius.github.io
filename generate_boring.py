@@ -41,11 +41,15 @@ def generate_html(json_file, output_file, title, nav_links):
         if item_link.endswith(".html"):
              button_text = "Visit Page"
 
+        target_attr = ' target="_blank"'
+        if item.get('redirect'):
+            target_attr = ' target="_self"'
+
         items_html += f"""
     <div class="item">
         <h2>{item.get('title', 'No Title')}</h2>
         <p>{item.get('body', '')}</p>
-        <a href="{item_link}">{button_text}</a>
+        <a href="{item_link}"{target_attr}>{button_text}</a>
     </div>"""
 
     html_content = f"""<!DOCTYPE html>

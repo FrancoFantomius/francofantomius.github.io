@@ -21,7 +21,8 @@
         "title": "LaTeX",
         "link": "latex.html",
         "short": "LaTeX",
-        "body": "A useful page for writing in LaTeX."
+        "body": "A useful page for writing in LaTeX.",
+        "redirect": true
     },
     {
         "title": "Internet Archive",

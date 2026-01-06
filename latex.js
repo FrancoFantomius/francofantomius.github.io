@@ -293,6 +293,13 @@ function showInfoCard(data) {
     }
 
     cardLink.href = data.link;
+
+    if (data.redirect) {
+        cardLink.target = "_self";
+    } else {
+        cardLink.target = "_blank";
+    }
+
     infoCard.classList.add('active');
 
     if (params.autoRotate) {
