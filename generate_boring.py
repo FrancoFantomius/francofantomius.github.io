@@ -80,16 +80,16 @@ def generate_html(json_file, output_file, title, nav_links):
 def main():
     # Generate boring_index.html
     generate_html(
-        json_file='points.json',
-        output_file='boring_index.html',
+        json_file='francofantomius.github.io/points.json',
+        output_file='francofantomius.github.io/boring_index.html',
         title='FrancoFantomius (Boring Mode)',
         nav_links=[('Switch to Normal Mode', 'index.html')]
     )
 
     # Generate boring_latex.html
     generate_html(
-        json_file='points_latex.json',
-        output_file='boring_latex.html',
+        json_file='francofantomius.github.io/points_latex.json',
+        output_file='francofantomius.github.io/boring_latex.html',
         title='LaTeX (Boring Mode)',
         nav_links=[('Home', 'boring_index.html'), ('Switch to Normal Mode', 'latex.html')]
     )
