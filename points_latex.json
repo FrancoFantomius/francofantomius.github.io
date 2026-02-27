@@ -31,15 +31,21 @@
         "redirect": true
     },
     {
-        "title": "MACROS WIP",
+        "title": "MACROS",
         "link": "https://francofantomius.com/latex/MACROS.sty",
-        "short": "MACROS WIP",
-        "body": "A collection of my most used MACROS in LaTeX. To use the file just move it to the same directory of your LaTeX file. To use it you need to add \\usepackage{MACROS} in the preamble."
+        "short": "MACROS",
+        "body": "A collection of my most used MACROS in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{MACROS} in the preamble."
     },
     {
-        "title": "Theorems Styles WIP",
+        "title": "Theorems Styles",
         "link": "https://francofantomius.com/latex/styles.sty",
-        "short": "Styles WIP",
-        "body": "A list for the styles I use for theorems, lemmas, etc. Note that by default the page has thin margins. To download the file just move it to the same directory of your LaTeX file. To use it you need to add \\usepackage{styles} in the preamble."
+        "short": "Styles",
+        "body": "A list of common styles for theorems, lemmas, etc. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{styles} in the preamble."
+    },
+    {
+        "title": "Physics Macros",
+        "link": "https://francofantomius.com/latex/physics.sty",
+        "short": "Physics",
+        "body": "A collection of shortcuts for Physics. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{physics} in the preamble."
     }
 ]

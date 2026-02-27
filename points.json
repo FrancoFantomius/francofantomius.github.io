@@ -1,15 +1,16 @@
 [
     {
-        "title": "GitHub Repository",
-        "link": "https://github.com//FrancoFantomius/francofantomius.github.io",
-        "short": "GitHub",
-        "body": "Explore the source code of this project and contribute to its development on GitHub."
-    },
-    {
         "title": "Wikipedia: Sierpiński triangle",
         "link": "https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle",
         "short": "Sierpiński triangle",
         "body": "The Sierpiński triangle is a fractal with the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles."
+    },
+    {
+        "title": "LaTeX",
+        "link": "latex.html",
+        "short": "LaTeX",
+        "body": "A useful page for writing in LaTeX.",
+        "redirect": true
     },
     {
         "title": "Contact Me",
@@ -18,11 +19,10 @@
         "body": "Do you have questions or comments? Send me an email!"
     },
     {
-        "title": "LaTeX",
-        "link": "latex.html",
-        "short": "LaTeX",
-        "body": "A useful page for writing in LaTeX.",
-        "redirect": true
+        "title": "GitHub Repository",
+        "link": "https://github.com//FrancoFantomius/francofantomius.github.io",
+        "short": "GitHub",
+        "body": "Explore the source code of this project and contribute to its development on GitHub."
     },
     {
         "title": "Internet Archive",

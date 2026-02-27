@@ -1,6 +1,10 @@
 import json
 import os
 
+"""
+This a script that generates a HTML page from a JSON file. It's used for generating the "boring" version of the website.
+"""
+
 def generate_html(json_file, output_file, title, nav_links):
     try:
         with open(json_file, 'r', encoding='utf-8') as f:
