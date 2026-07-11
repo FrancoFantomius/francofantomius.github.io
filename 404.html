@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="404 - Page Not Found. Explore the interactive site map fractal to find your way back.">
+    <title>404 - Page Not Found</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/404.css">
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+</head>
+
+<body>
+    <!-- The scrolling container that provides height for the scroll event -->
+    <div class="scroll-height-provider"></div>
+
+    <!-- Fullscreen backdrop and canvas container -->
+    <div id="view-container">
+        <canvas id="tree-canvas"></canvas>
+        <div id="markers-layer"></div>
+    </div>
+
+    <!-- Error message header (fades out as you scroll down) -->
+    <div class="error-header" id="error-header">
+        <h1>404</h1>
+        <p class="error-title">Oops! You've drifted off course...</p>
+        <p class="error-subtitle">The page you are looking for does not exist. Scroll down to grow the site tree and explore its branches to find your way back.</p>
+        <div class="scroll-indicator">
+            <span class="scroll-text">Scroll to explore</span>
+            <svg class="scroll-arrow" viewBox="0 0 24 24">
+                <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Interactive Details Modal (Info Card) -->
+    <div id="info-card">
+        <div class="close-card">&times;</div>
+        <h2 id="card-title">Title</h2>
+        <p id="card-body"></p>
+        <a id="card-link" href="#" class="btn-link">Explore Page</a>
+    </div>
+
+    <script src="/404.js"></script>
+</body>
+
+</html>

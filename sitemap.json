@@ -1,0 +1,116 @@
+{
+    "O": {
+        "label": "O",
+        "title": "Home (3D)",
+        "link": "/index.html",
+        "desc": "Return to the main page featuring the Sierpiński Tetrahedron.",
+        "color": "#475569",
+        "path": []
+    },
+    "A": {
+        "label": "A",
+        "title": "Interactive Site Map",
+        "link": "/404.html",
+        "desc": "Explore the site branches visually. Scroll up/down to grow/shrink the tree.",
+        "color": "#0f172a",
+        "path": [
+            0
+        ]
+    },
+    "B": {
+        "label": "B",
+        "title": "LaTeX",
+        "link": "/latex.html",
+        "desc": "A useful page for writing in LaTeX.",
+        "color": "#0044aa",
+        "path": [
+            0,
+            0
+        ]
+    },
+    "C": {
+        "label": "C",
+        "title": "GitHub Repo",
+        "link": "https://github.com/FrancoFantomius/francofantomius.github.io",
+        "desc": "Browse the repository, view issues, or contribute to the project.",
+        "color": "#0284c7",
+        "path": [
+            0,
+            1
+        ]
+    },
+    "D": {
+        "label": "D",
+        "title": "LaTeX (Boring)",
+        "link": "/boring_latex.html",
+        "desc": "A useful page for writing in LaTeX.",
+        "color": "#334155",
+        "path": [
+            0,
+            0,
+            0
+        ]
+    },
+    "E": {
+        "label": "E",
+        "title": "MACROS",
+        "link": "/latex/MACROS.sty",
+        "desc": "A collection of my most used MACROS in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{MACROS} in the preamble.",
+        "color": "#0d9488",
+        "path": [
+            0,
+            0,
+            1
+        ]
+    },
+    "F": {
+        "label": "F",
+        "title": "Home (Boring)",
+        "link": "/boring_index.html",
+        "desc": "A static, text-only version of the main website landing page.",
+        "color": "#5b21b6",
+        "path": [
+            0,
+            1,
+            0
+        ]
+    },
+    "G": {
+        "label": "G",
+        "title": "Email",
+        "link": "mailto:mail@francofantomius.com",
+        "desc": "Do you have questions or comments? Send me an email!",
+        "color": "#2563eb",
+        "path": [
+            0,
+            1,
+            1
+        ]
+    },
+    "H": {
+        "label": "H",
+        "title": "Styles",
+        "link": "/latex/styles.sty",
+        "desc": "A list of common styles for theorems, lemmas, etc. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{styles} in the preamble.",
+        "color": "#0ea5e9",
+        "path": [
+            0,
+            0,
+            1,
+            0
+        ]
+    },
+    "I": {
+        "label": "I",
+        "title": "Physics",
+        "link": "/latex/physics.sty",
+        "desc": "A collection of shortcuts for Physics. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{physics} in the preamble.",
+        "color": "#06b6d4",
+        "path": [
+            0,
+            0,
+            1,
+            1
+        ]
+    }
+}
