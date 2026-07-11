@@ -175,6 +175,53 @@ def update_sitemap(sitemap_file, points_files):
     else:
         print(f"No description/title updates needed for {sitemap_file}.")
 
+def generate_sitemap_xml(sitemap_file, xml_file):
+    try:
+        with open(sitemap_file, 'r', encoding='utf-8') as f:
+            sitemap_data = json.load(f)
+    except Exception as e:
+        print(f"Error loading {sitemap_file} for XML sitemap generation: {e}")
+        return
+
+    base_url = "https://francofantomius.com"
+    urls = []
+    
+    for key, item in sitemap_data.items():
+        link = item.get('link', '')
+        if not link:
+            continue
+        
+        # Check if it is a local link
+        if link.startswith('/') and not link.startswith('//'):
+            # Only include HTML pages (exclude assets like .sty and exclude 404 page)
+            if link.endswith('.html') and link != '/404.html':
+                if link == '/index.html':
+                    urls.append(base_url + '/')
+                else:
+                    urls.append(base_url + link)
+            elif link == '/':
+                urls.append(base_url + '/')
+
+    # Deduplicate while preserving order
+    unique_urls = []
+    for u in urls:
+        if u not in unique_urls:
+            unique_urls.append(u)
+
+    xml_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for url in unique_urls:
+        xml_lines.append('  <url>')
+        xml_lines.append(f'    <loc>{url}</loc>')
+        xml_lines.append('  </url>')
+    xml_lines.append('</urlset>\n')
+
+    with open(xml_file, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(xml_lines))
+    print(f"Generated {xml_file}")
+
 def main():
     # Generate boring_index.html
     generate_html(
@@ -196,6 +243,9 @@ def main():
 
     # Update sitemap.json
     update_sitemap('sitemap.json', ['points.json', 'points_latex.json'])
+
+    # Generate sitemap.xml
+    generate_sitemap_xml('sitemap.json', 'sitemap.xml')
 
 if __name__ == "__main__":
     main()
