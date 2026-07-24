@@ -47,5 +47,11 @@
         "link": "https://francofantomius.com/latex/physics.sty",
         "short": "Physics",
         "body": "A collection of shortcuts for Physics. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{physics} in the preamble."
+    },
+    {
+        "title": "LaTeX CLI",
+        "link": "https://github.com/FrancoFantomius/latex-cli/releases",
+        "short": "CLI",
+        "body": "A command line tool to setup a LaTeX Project. Creating a main.tex file and adding all the MACROS and dependencies needed."
     }
 ]
