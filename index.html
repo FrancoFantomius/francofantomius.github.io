@@ -6,13 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="FrancoFantomius - Personal website exploring fractals, mathematics, LaTeX resources, and other projects with interactive 3D visualizations.">
     <title>FrancoFantomius</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
     <script type="importmap">
         {
             "imports": {
                 "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+                "lit": "https://cdn.jsdelivr.net/npm/lit@3.3.3/+esm",
+                "lit/decorators.js": "https://cdn.jsdelivr.net/npm/lit@3.3.3/decorators/+esm",
+                "lit/directives/unsafe-html.js": "https://cdn.jsdelivr.net/npm/lit@3.3.3/directives/unsafe-html/+esm",
+                "@francofantomius/material-components/theme": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/tokens/index.js",
+                "@francofantomius/material-components/fab": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/fab/fab.js",
+                "@francofantomius/material-components/card": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/card/card.js",
+                "@francofantomius/material-components/switch": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/switch/switch.js",
+                "@francofantomius/material-components/segmented-button": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/segmented-button/segmented-button.js",
+                "@francofantomius/material-components/chip": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/chip/chip.js",
+                "@francofantomius/material-components/button": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/button/button.js",
+                "@francofantomius/material-components/icon-button": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/icon-button/icon-button.js",
+                "@francofantomius/material-components/dialog": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/dialog/dialog.js",
+                "@francofantomius/material-components": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/index.js"
             }
         }
     </script>
@@ -20,39 +35,71 @@
 
 <body>
 
-    <button id="menu-btn" title="Settings">
-        <img src="icons/settings.svg" alt="Settings">
-    </button>
+    <md-fab id="menu-btn" icon="settings" aria-label="Settings" title="Settings"></md-fab>
 
-    <div id="ui-container">
-        <h1>Settings</h1>
-        <div class="control-group">
-            <div class="color-row">
-                <label for="color-picker" style="margin: 0;">Base Color</label>
-                <input type="color" id="color-picker" value="#0044aa">
+    <md-card id="ui-container" variant="elevated">
+        <div slot="header" class="m3-settings-header">
+            <div class="m3-settings-title-group">
+                <span class="material-symbols-outlined m3-settings-icon">settings</span>
+                <h2 class="m3-settings-title">Settings</h2>
+            </div>
+            <md-icon-button id="m3-settings-close" icon="close" aria-label="Close settings"></md-icon-button>
+        </div>
+
+        <div class="m3-settings-body">
+            <!-- Theme Appearance Row -->
+            <div class="m3-control-col">
+                <div class="m3-control-label-group">
+                    <span class="m3-control-label">Appearance</span>
+                    <span class="m3-control-sub">Light, dark, or system mode</span>
+                </div>
+                <md-segmented-button-set id="theme-selector">
+                    <md-segmented-button value="light" icon="light_mode" label="Light"></md-segmented-button>
+                    <md-segmented-button value="dark" icon="dark_mode" label="Dark"></md-segmented-button>
+                    <md-segmented-button value="system" icon="desktop_windows" label="System"></md-segmented-button>
+                </md-segmented-button-set>
+            </div>
+
+            <!-- Base Color Row -->
+            <div class="m3-control-row">
+                <div class="m3-control-label-group">
+                    <span class="m3-control-label">Base Color</span>
+                    <span class="m3-control-sub">Browser accent or custom</span>
+                </div>
+                <div class="m3-color-actions">
+                    <md-chip id="m3-use-accent-btn" variant="assist" label="Browser" icon="palette" title="Match browser accent color"></md-chip>
+                    <label class="m3-color-wrapper" title="Pick custom color">
+                        <input type="color" id="color-picker" value="#0044aa">
+                        <span class="m3-color-indicator" id="color-indicator"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Auto Rotation Row with md-switch -->
+            <div class="m3-control-row">
+                <div class="m3-control-label-group">
+                    <span class="m3-control-label">Auto Rotation</span>
+                    <span class="m3-control-sub">Continuous 3D camera orbit</span>
+                </div>
+                <md-switch id="rotate-check"></md-switch>
+            </div>
+
+            <!-- Boring Mode Button -->
+            <div class="m3-actions-row">
+                <md-button id="boring-btn" variant="tonal" href="boring_index.html" icon="article">Boring Mode</md-button>
             </div>
         </div>
-        <div class="control-group">
-            <label class="checkbox-container">
-                Auto Rotation
-                <input type="checkbox" id="rotate-check">
-            </label>
-        </div>
-        <div id="stats">
-            Tetrahedrons: <span id="count-val">4</span>
-        </div>
-        <a href="boring_index.html" class="btn-link"
-            style="display: block; margin-top: 15px; text-align: center;">Boring Mode</a>
-    </div>
+    </md-card>
 
     <div id="markers-layer"></div>
 
-    <div id="info-card">
-        <div class="close-card">&times;</div>
-        <h2 id="card-title">Title</h2>
-        <p id="card-body"></p>
-        <a id="card-link" href="#" target="_blank" class="btn-link">Go to Link</a>
-    </div>
+    <md-dialog id="info-dialog">
+        <span id="dialog-body"></span>
+        <div slot="actions">
+            <md-button id="dialog-close-btn" variant="text">Close</md-button>
+            <md-button id="dialog-link-btn" variant="filled" target="_blank">Go to Link</md-button>
+        </div>
+    </md-dialog>
 
     <div id="loading-msg" class="loading">Generating Fractal...</div>
     <div id="canvas-container"></div>

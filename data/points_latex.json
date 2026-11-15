@@ -3,30 +3,35 @@
         "title": "Complement of the Menger Sponge",
         "link": "https://en.wikipedia.org/wiki/Menger_sponge",
         "short": "Inverted Menger Sponge",
+        "icon": "history_edu",
         "body": "An 'inverted' Menger sponge or technically the Complement of the Menger Sponge. While the standard Menger sponge is formed by repeatedly drilling holes out of a solid cube, the inverted version is the shape of the holes themselves. This results in adding multiple 3D crosses each iteration."
     },
     {
         "title": "LaTeX Wikibook",
         "link": "https://en.wikibooks.org/wiki/LaTeX",
         "short": "Wikibook",
+        "icon": "menu_book",
         "body": "The definitive guide to LaTeX. Comprehensive documentation for all your formatting needs."
     },
     {
         "title": "Detexify",
         "link": "https://detexify.kirelabs.org/classify.html",
         "short": "Detexify",
+        "icon": "draw",
         "body": "Draw a symbol and get the corresponding LaTeX command. Extremely useful for finding specific symbols."
     },
     {
         "title": "CTAN",
         "link": "https://www.ctan.org/",
         "short": "CTAN",
+        "icon": "archive",
         "body": "The Comprehensive TEX Archive Network. The central place for all things TeX and LaTeX."
     },
     {
         "title": "Home",
-        "link": "https://francofantomius.com/",
+        "link": "index.html",
         "short": "Home",
+        "icon": "home",
         "body": "Go back to the home page",
         "redirect": true
     },
@@ -34,30 +39,35 @@
         "title": "MACROS",
         "link": "https://francofantomius.com/latex/MACROS.sty",
         "short": "MACROS",
+        "icon": "deployed_code",
         "body": "A collection of my most used MACROS in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{MACROS} in the preamble."
     },
     {
         "title": "Theorems Styles",
         "link": "https://francofantomius.com/latex/styles.sty",
         "short": "Styles",
+        "icon": "deployed_code",
         "body": "A list of common styles for theorems, lemmas, etc. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{styles} in the preamble."
     },
     {
         "title": "Exercises Package",
         "link": "https://francofantomius.com/latex/exercises.sty",
         "short": "Exercises",
+        "icon": "deployed_code",
         "body": "This is a package to set up everything needed to write exercises and solutions in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{exercises} in the preamble."
     },
     {
         "title": "Physics Macros",
         "link": "https://francofantomius.com/latex/physics.sty",
         "short": "Physics",
+        "icon": "deployed_code",
         "body": "A collection of shortcuts for Physics. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{physics} in the preamble."
     },
     {
         "title": "LaTeX CLI",
         "link": "https://github.com/FrancoFantomius/latex-cli/releases",
         "short": "CLI",
+        "icon": "terminal",
         "body": "A command line tool to setup a LaTeX Project. Creating a main.tex file and adding all the MACROS and dependencies needed."
     }
 ]

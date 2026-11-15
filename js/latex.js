@@ -1,12 +1,15 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import '@francofantomius/material-components/dialog';
+import { MarkerManager } from './markers.js';
+import { SettingsManager } from './settings.js';
 
 let scene, camera, renderer, controls;
 let mesh;
 let geometry, material;
+let pointLight;
 
 let pointsData = [];
-let markers = [];
 let currentFractalPositions = [];
 
 const params = {
@@ -16,19 +19,37 @@ const params = {
     size: 20
 };
 
-const menuBtn = document.getElementById('menu-btn');
-const uiContainer = document.getElementById('ui-container');
-const colorPicker = document.getElementById('color-picker');
-const rotateCheck = document.getElementById('rotate-check');
-const countVal = document.getElementById('count-val');
-const markersLayer = document.getElementById('markers-layer');
-const infoCard = document.getElementById('info-card');
-const cardTitle = document.getElementById('card-title');
-const cardBody = document.getElementById('card-body');
-const cardLink = document.getElementById('card-link');
+const markerManager = new MarkerManager({
+    getAutoRotate: () => params.autoRotate
+});
 
-menuBtn.addEventListener('click', () => {
-    uiContainer.classList.toggle('hidden');
+function getThemeBackgroundColor(isDark) {
+    return isDark ? 0x111318 : 0xf8fafc;
+}
+
+function updateSceneTheme(isDark) {
+    if (!scene) return;
+    const bgColor = getThemeBackgroundColor(isDark);
+    scene.background.set(bgColor);
+    if (scene.fog) {
+        scene.fog.color.set(bgColor);
+    }
+}
+
+const settingsManager = new SettingsManager({
+    params,
+    onColorChange: (newColor) => {
+        params.color = newColor;
+        if (pointLight) pointLight.color.set(params.color);
+        updateMaterial();
+    },
+    onAutoRotateChange: (autoRotate) => {
+        params.autoRotate = autoRotate;
+        if (controls) controls.autoRotate = autoRotate;
+    },
+    onThemeChange: (themeMode, isDark) => {
+        updateSceneTheme(isDark);
+    }
 });
 
 init();
@@ -38,9 +59,11 @@ function init() {
     fetchPoints();
 
     const container = document.getElementById('canvas-container');
+    const isDarkInitial = document.documentElement.getAttribute('data-theme') === 'dark';
+    const initialBg = getThemeBackgroundColor(isDarkInitial);
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf8fafc);
-    scene.fog = new THREE.Fog(0xf8fafc, 40, 120);
+    scene.background = new THREE.Color(initialBg);
+    scene.fog = new THREE.Fog(initialBg, 40, 120);
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(40, 40, 40);
@@ -52,10 +75,12 @@ function init() {
     container.appendChild(renderer.domElement);
 
     controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
+    controls.enableDamping = false;
+    controls.dampingFactor = 0.9;
     controls.autoRotate = params.autoRotate;
     controls.autoRotateSpeed = 2.0;
+
+    markerManager.setControls(controls);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambientLight);
@@ -65,8 +90,9 @@ function init() {
     dirLight.castShadow = true;
     scene.add(dirLight);
 
-    const pointLight = new THREE.PointLight(params.color, 1, 100);
-    pointLight.position.set(-20, -20, -20);
+    const pLight = new THREE.PointLight(params.color, 1, 100);
+    pLight.position.set(-20, -20, -20);
+    pointLight = pLight;
     scene.add(pointLight);
 
     geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -76,28 +102,6 @@ function init() {
     startLevelCycle();
 
     window.addEventListener('resize', onWindowResize);
-
-    colorPicker.addEventListener('input', (e) => {
-        params.color = e.target.value;
-        pointLight.color.set(params.color);
-        updateMaterial();
-    });
-
-    rotateCheck.addEventListener('change', (e) => {
-        params.autoRotate = e.target.checked;
-        controls.autoRotate = params.autoRotate;
-        if (!infoCard.classList.contains('active')) {
-            // Let animate loop handle rotation
-        }
-    });
-
-    const closeCard = document.querySelector('.close-card');
-    if (closeCard) {
-        closeCard.addEventListener('click', () => {
-            infoCard.classList.remove('active');
-            if (params.autoRotate) controls.autoRotate = true;
-        });
-    }
 }
 
 async function fetchPoints() {
@@ -178,8 +182,6 @@ function generateFractal() {
                         matrices.push(dummy.matrix.clone());
 
                         // Store position and size for markers
-                        // Position logic: "closer to the vertices" attempt
-                        // We store the center and size, logic in createMarkers decies exact spot
                         currentFractalPositions.push({
                             center: new THREE.Vector3(posX, posY, posZ),
                             size: step
@@ -196,8 +198,6 @@ function generateFractal() {
 
     if (matrices.length === 0) return;
 
-    countVal.innerText = matrices.length.toLocaleString();
-
     mesh = new THREE.InstancedMesh(geometry, material, matrices.length);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -211,124 +211,61 @@ function generateFractal() {
 }
 
 function createMarkers() {
-    markersLayer.innerHTML = '';
-    markers = [];
-
     if (!pointsData || pointsData.length === 0 || currentFractalPositions.length === 0) return;
 
-    // Logic: "fill the lowest level first" -> Largest blocks first
-    // Sort by size descending
-    // Filter out center cubes (at origin) as they don't have an outward-facing side
-    const sortedPositions = [...currentFractalPositions]
-        .filter(block => {
-            const c = block.center;
-            return !(Math.abs(c.x) < 0.01 && Math.abs(c.y) < 0.01 && Math.abs(c.z) < 0.01);
-        })
-        .sort((a, b) => b.size - a.size);
-
-    pointsData.forEach((data, index) => {
-        if (index >= sortedPositions.length) return;
-
-        const block = sortedPositions[index];
-        const center = block.center;
-        const halfSize = block.size / 2;
-
-        // Determine which face is "outward" (facing away from origin)
-        // Find the axis with the largest absolute value in the center position
-        const absX = Math.abs(center.x);
-        const absY = Math.abs(center.y);
-        const absZ = Math.abs(center.z);
-
-        let faceOffset = new THREE.Vector3(0, 0, 0);
-
-        if (absX >= absY && absX >= absZ) {
-            // X-axis is most outward
-            faceOffset.x = Math.sign(center.x) * halfSize;
-        } else if (absY >= absX && absY >= absZ) {
-            // Y-axis is most outward
-            faceOffset.y = Math.sign(center.y) * halfSize;
-        } else {
-            // Z-axis is most outward
-            faceOffset.z = Math.sign(center.z) * halfSize;
-        }
-
-        const position = center.clone().add(faceOffset);
-
-        const wrapper = document.createElement('div');
-        wrapper.className = 'marker-wrapper';
-
-        const btn = document.createElement('div');
-        btn.className = 'marker-btn';
-        btn.innerText = '+';
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            showInfoCard(data);
-        });
-        wrapper.appendChild(btn);
-
-        if (data.short) {
-            const label = document.createElement('div');
-            label.className = 'marker-label';
-            label.innerText = data.short;
-            wrapper.appendChild(label);
-        }
-
-        markersLayer.appendChild(wrapper);
-
-        markers.push({
-            element: wrapper,
-            baseVector: position
-        });
+    // Filter out center cubes
+    const validBlocks = currentFractalPositions.filter(block => {
+        const c = block.center;
+        return !(Math.abs(c.x) < 0.01 && Math.abs(c.y) < 0.01 && Math.abs(c.z) < 0.01);
     });
-}
 
-function showInfoCard(data) {
-    cardTitle.innerText = data.title;
-
-    if (data.body) {
-        cardBody.innerText = data.body;
-        cardBody.style.display = 'block';
-    } else {
-        cardBody.style.display = 'none';
-    }
-
-    cardLink.href = data.link;
-
-    if (data.redirect) {
-        cardLink.target = "_self";
-    } else {
-        cardLink.target = "_blank";
-    }
-
-    infoCard.classList.add('active');
-
-    if (params.autoRotate) {
-        controls.autoRotate = false;
-    }
-}
-
-function updateMarkers() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const widthHalf = width / 2;
-    const heightHalf = height / 2;
-
-    markers.forEach(marker => {
-        const pos = marker.baseVector.clone();
-        pos.project(camera);
-
-        if (pos.z > 1) {
-            marker.element.style.display = 'none';
-        } else {
-            marker.element.style.display = 'flex';
-
-            const x = (pos.x * widthHalf) + widthHalf;
-            const y = -(pos.y * heightHalf) + heightHalf;
-
-            marker.element.style.left = `${x}px`;
-            marker.element.style.top = `${y}px`;
+    // Group blocks by size (each size corresponds to a recursive depth level)
+    const sizeGroups = new Map();
+    for (const block of validBlocks) {
+        // Round size to avoid float precision issues when grouping
+        const key = block.size.toFixed(4);
+        if (!sizeGroups.has(key)) {
+            sizeGroups.set(key, { size: block.size, blocks: [] });
         }
-    });
+        sizeGroups.get(key).blocks.push(block);
+    }
+
+    // Sort depth tiers from largest blocks (lowest depth level) to smallest
+    const sortedTiers = Array.from(sizeGroups.values()).sort((a, b) => b.size - a.size);
+
+    const totalNeeded = pointsData.length;
+    const selectedPositions = [];
+
+    for (const tier of sortedTiers) {
+        if (selectedPositions.length >= totalNeeded) break;
+
+        // Compute outward face positions for all blocks in this tier
+        const tierCandidates = tier.blocks.map(block => {
+            const center = block.center;
+            const halfSize = block.size / 2;
+
+            const absX = Math.abs(center.x);
+            const absY = Math.abs(center.y);
+            const absZ = Math.abs(center.z);
+
+            let faceOffset = new THREE.Vector3(0, 0, 0);
+            if (absX >= absY && absX >= absZ) {
+                faceOffset.x = Math.sign(center.x) * halfSize;
+            } else if (absY >= absX && absY >= absZ) {
+                faceOffset.y = Math.sign(center.y) * halfSize;
+            } else {
+                faceOffset.z = Math.sign(center.z) * halfSize;
+            }
+
+            return center.clone().add(faceOffset);
+        });
+
+        const neededAtThisTier = Math.min(tierCandidates.length, totalNeeded - selectedPositions.length);
+        const chosen = MarkerManager.selectMaxSeparatedPoints(tierCandidates, neededAtThisTier, selectedPositions);
+        selectedPositions.push(...chosen);
+    }
+
+    markerManager.createMarkers(pointsData, selectedPositions);
 }
 
 function onWindowResize() {
@@ -340,6 +277,6 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
     if (controls) controls.update();
-    if (camera && markers.length > 0) updateMarkers();
+    markerManager.update(camera);
     if (renderer && scene && camera) renderer.render(scene, camera);
 }

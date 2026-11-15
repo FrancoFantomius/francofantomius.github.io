@@ -1,13 +1,19 @@
+import '@francofantomius/material-components/dialog';
+import '@francofantomius/material-components/button';
+import '@francofantomius/material-components/icon-button';
+import { SettingsManager } from './settings.js';
+
 (function () {
     const canvas = document.getElementById('tree-canvas');
     const ctx = canvas.getContext('2d');
     const markersLayer = document.getElementById('markers-layer');
     const errorHeader = document.getElementById('error-header');
-    const infoCard = document.getElementById('info-card');
-    const cardTitle = document.getElementById('card-title');
-    const cardBody = document.getElementById('card-body');
-    const cardLink = document.getElementById('card-link');
-    const closeCard = document.querySelector('.close-card');
+    
+    // M3 Dialog elements
+    const infoDialog = document.getElementById('info-dialog');
+    const dialogBody = document.getElementById('dialog-body');
+    const dialogCloseBtn = document.getElementById('dialog-close-btn');
+    const dialogLinkBtn = document.getElementById('dialog-link-btn');
 
     // Configuration for asymmetric fractal tree (matching the reference image structure)
     const L_ANGLE = -32 * Math.PI / 180; // Left branch relative angle
@@ -18,6 +24,36 @@
 
     // Point mappings loaded dynamically from data/sitemap.json
     let MARKERS_CONFIG = {};
+    let markerPositions = {};
+    let markerElements = {};
+    let scrollPercent = 0;
+    let ticking = false;
+
+    // M3 Settings
+    const params = {
+        color: '#0044aa'
+    };
+
+    const settingsManager = new SettingsManager({
+        params,
+        onColorChange: (newColor) => {
+            params.color = newColor;
+            drawTree();
+        },
+        onThemeChange: () => {
+            drawTree();
+        }
+    });
+
+    if (dialogCloseBtn && infoDialog) {
+        dialogCloseBtn.addEventListener('click', () => {
+            if (typeof infoDialog.close === 'function') {
+                infoDialog.close('close');
+            } else {
+                infoDialog.open = false;
+            }
+        });
+    }
 
     async function loadSitemap() {
         try {
@@ -30,12 +66,22 @@
         }
     }
 
-    let markerPositions = {};
-    let markerElements = {};
-    let scrollPercent = 0;
-    let ticking = false;
+    // Helper: Map node labels or icons to material symbols
+    function getMarkerIcon(config) {
+        if (config.icon) return config.icon;
+        const titleLower = (config.title || '').toLowerCase();
+        if (titleLower.includes('home')) return 'home';
+        if (titleLower.includes('latex')) return 'functions';
+        if (titleLower.includes('github') || titleLower.includes('code')) return 'code';
+        if (titleLower.includes('email') || titleLower.includes('contact') || (config.link && config.link.startsWith('mailto:'))) return 'mail';
+        if (titleLower.includes('archive') || titleLower.includes('history')) return 'history';
+        if (titleLower.includes('map') || titleLower.includes('site')) return 'account_tree';
+        if (titleLower.includes('boring')) return 'article';
+        if (titleLower.includes('triangle') || titleLower.includes('fractal')) return 'history_edu';
+        return 'explore';
+    }
 
-    // Initialize HTML overlays for the markers
+    // Initialize Material Design 3 HTML overlays for the markers
     function initMarkers() {
         markersLayer.innerHTML = '';
         Object.keys(MARKERS_CONFIG).forEach(key => {
@@ -45,32 +91,16 @@
             wrapper.className = 'marker-wrapper';
             wrapper.id = `marker-${key}`;
 
-            const btn = document.createElement('div');
-            btn.className = 'marker-btn';
-            btn.style.borderColor = '#ffffff';
-            btn.style.color = '#ffffff';
-            btn.style.backgroundColor = config.color;
-            btn.style.boxShadow = `0 4px 10px rgba(0, 0, 0, 0.15), 0 0 10px ${config.color}44`;
-            btn.innerText = config.label;
+            const btn = document.createElement('md-icon-button');
+            btn.setAttribute('variant', 'tonal');
+            const iconName = getMarkerIcon(config);
+            btn.setAttribute('icon', iconName);
+            btn.setAttribute('aria-label', config.title || config.label || 'Marker');
 
-            // Hover styles inverted cleanly for light background
-            btn.addEventListener('mouseenter', () => {
-                btn.style.backgroundColor = '#ffffff';
-                btn.style.color = config.color;
-                btn.style.borderColor = config.color;
-                btn.style.boxShadow = `0 6px 15px ${config.color}88`;
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.backgroundColor = config.color;
-                btn.style.color = '#ffffff';
-                btn.style.borderColor = '#ffffff';
-                btn.style.boxShadow = `0 4px 10px rgba(0, 0, 0, 0.15), 0 0 10px ${config.color}44`;
-            });
-
-            // Click opens the Info Card
+            // Click opens the M3 dialog
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                showInfoCard(config);
+                showInfoDialog(config);
             });
 
             // Tooltip creation
@@ -78,63 +108,89 @@
             tooltip.className = 'marker-tooltip';
             tooltip.innerHTML = `
                 <div class="tooltip-title">${config.title}</div>
-                <div class="tooltip-desc">${config.desc}</div>
+                <div class="tooltip-desc">${config.desc || ''}</div>
             `;
+
+            const label = document.createElement('div');
+            label.className = 'marker-label';
+            label.innerText = config.label || config.title;
 
             wrapper.appendChild(tooltip);
             wrapper.appendChild(btn);
+            wrapper.appendChild(label);
             markersLayer.appendChild(wrapper);
 
             markerElements[key] = wrapper;
         });
     }
 
-    // Modal Interaction
-    function showInfoCard(config) {
-        cardTitle.innerText = config.title;
-        cardBody.innerText = config.desc;
-        cardLink.href = config.link;
+    // Show M3 Dialog
+    function showInfoDialog(config) {
+        if (!infoDialog) return;
 
-        if (config.link.startsWith('http') || config.link.startsWith('mailto')) {
-            cardLink.target = '_blank';
-        } else {
-            cardLink.target = '_self';
+        infoDialog.setAttribute('headline', config.title || 'Navigation');
+        infoDialog.setAttribute('icon', getMarkerIcon(config));
+
+        if (dialogBody) {
+            dialogBody.textContent = config.desc || '';
+            dialogBody.style.display = config.desc ? 'block' : 'none';
         }
 
-        infoCard.classList.add('active');
+        if (dialogLinkBtn) {
+            dialogLinkBtn.href = config.link;
+            const isExternal = config.link.startsWith('http') || config.link.startsWith('mailto');
+            dialogLinkBtn.target = isExternal ? '_blank' : '_self';
+            
+            if (config.link.endsWith('.html') || !isExternal) {
+                dialogLinkBtn.textContent = 'Explore Page';
+            } else if (config.link.startsWith('mailto:')) {
+                dialogLinkBtn.textContent = 'Send Email';
+            } else {
+                dialogLinkBtn.textContent = 'Open Link';
+            }
+        }
+
+        if (typeof infoDialog.show === 'function') {
+            infoDialog.show();
+        } else {
+            infoDialog.open = true;
+        }
     }
 
-    closeCard.addEventListener('click', () => {
-        infoCard.classList.remove('active');
-    });
+    // Convert hex to rgb object
+    function hexToRgb(hex) {
+        const cleaned = hex.replace('#', '');
+        const bigint = parseInt(cleaned.length === 3 
+            ? cleaned.split('').map(c => c + c).join('') 
+            : cleaned, 16);
+        return {
+            r: (bigint >> 16) & 255,
+            g: (bigint >> 8) & 255,
+            b: bigint & 255
+        };
+    }
 
-    document.addEventListener('click', (e) => {
-        if (!infoCard.contains(e.target) && !e.target.classList.contains('marker-btn')) {
-            infoCard.classList.remove('active');
-        }
-    });
+    // Interpolate between two hex colors
+    function lerpColor(hexA, hexB, t) {
+        const a = hexToRgb(hexA);
+        const b = hexToRgb(hexB);
+        const r = Math.round(a.r + (b.r - a.r) * t);
+        const g = Math.round(a.g + (b.g - a.g) * t);
+        const bl = Math.round(a.b + (b.b - a.b) * t);
+        return `rgb(${r}, ${g}, ${bl})`;
+    }
 
-    infoCard.addEventListener('click', (e) => {
-        // Prevent click events inside the card from closing it
-        e.stopPropagation();
-    });
-
-    // Helper: Determine branch color based on path & depth (transitioning through blues/cyans)
+    // Helper: Determine branch color dynamically based on theme and active color
     function getBranchColor(depth, path) {
-        if (depth === 0) return '#002266'; // Deep navy base trunk (stands out on light bg)
+        const base = params.color || '#0044aa';
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const tipColor = isDark ? '#67e8f9' : '#22d3ee';
+        const trunkColor = isDark ? '#d8e2ff' : '#001a41';
 
-        // Find path-heavy side: check first splitting choice
-        const isLeft = path[1] === 0;
+        if (depth === 0) return trunkColor;
 
-        if (depth === 1) return isLeft ? '#0044aa' : '#0284c7'; // Blue vs Sky Blue
-        if (depth === 2) return isLeft ? '#0066cc' : '#0ea5e9'; // Mid Blue vs Sky Blue
-        if (depth === 3) return isLeft ? '#0284c7' : '#0d9488'; // Sky Blue vs Teal
-        if (depth === 4) return isLeft ? '#0ea5e9' : '#14b8a6'; // Sky Blue vs Light Teal
-        if (depth === 5) return isLeft ? '#06b6d4' : '#22d3ee'; // Cyan vs Bright Cyan
-        if (depth === 6) return '#0891b2'; // Cyan/Teal
-        if (depth === 7) return '#0ea5e9'; // Sky
-        if (depth === 8) return '#38bdf8'; // Light Sky
-        return '#67e8f9'; // Soft Cyan tip
+        const fraction = Math.min(1, depth / MAX_DEPTH);
+        return lerpColor(base, tipColor, fraction);
     }
 
     // Recursive function to compute and draw fractal branches
@@ -174,11 +230,11 @@
             markerPositions[matchedMarkerKey] = { x: endX, y: endY };
         }
 
-        // Draw leaf clusters on outer tips (matching the reference image but in bright cyan/blue)
+        // Draw leaf clusters on outer tips
         if (depth >= 8) {
             ctx.beginPath();
             ctx.arc(endX, endY, Math.max(2, 6 - depth * 0.4), 0, Math.PI * 2);
-            ctx.fillStyle = '#22d3ee'; // Bright cyan leaf circles
+            ctx.fillStyle = params.color || '#22d3ee';
             ctx.fill();
         }
 

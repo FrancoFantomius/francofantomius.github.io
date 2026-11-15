@@ -1,9 +1,48 @@
+:root {
+    --md-sys-color-primary: #005ac1;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #d8e2ff;
+    --md-sys-color-on-primary-container: #001a41;
+    --md-sys-color-surface: #fdfcff;
+    --md-sys-color-on-surface: #1a1c1e;
+    --md-sys-color-surface-container: #edeef2;
+    --md-sys-color-surface-container-high: #e7e8ec;
+    --md-sys-color-surface-container-highest: #e2e2e6;
+    --md-sys-color-surface-variant: #e1e2ec;
+    --md-sys-color-on-surface-variant: #44474f;
+    --md-sys-color-outline: #74777f;
+    --md-sys-color-outline-variant: #c4c6d0;
+    --md-sys-color-scrim: #000000;
+    --canvas-bg: #f7f7f7;
+    --browser-accent: AccentColor;
+    color-scheme: light;
+}
+
+[data-theme="dark"] {
+    --md-sys-color-primary: #adc6ff;
+    --md-sys-color-on-primary: #002e69;
+    --md-sys-color-primary-container: #004494;
+    --md-sys-color-on-primary-container: #d8e2ff;
+    --md-sys-color-surface: #111318;
+    --md-sys-color-on-surface: #e2e2e6;
+    --md-sys-color-surface-container: #1e2025;
+    --md-sys-color-surface-container-high: #282a2f;
+    --md-sys-color-surface-container-highest: #33353a;
+    --md-sys-color-surface-variant: #44474f;
+    --md-sys-color-on-surface-variant: #c4c6d0;
+    --md-sys-color-outline: #8e9099;
+    --md-sys-color-outline-variant: #44474f;
+    --canvas-bg: #111318;
+    color-scheme: dark;
+}
+
 body {
     margin: 0;
     overflow: hidden;
-    background-color: #f7f7f7;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
+    background-color: var(--canvas-bg);
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: var(--md-sys-color-on-surface);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #canvas-container {
@@ -12,163 +51,173 @@ body {
     display: block;
 }
 
-/* --- UI STYLES --- */
-#menu-btn {
+/* --- MATERIAL DESIGN 3 SETTINGS STYLES --- */
+md-fab#menu-btn {
     position: absolute;
     top: 20px;
     left: 20px;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    background: rgba(30, 30, 30, 0.9);
-    border: 1px solid #444;
-    border-radius: 8px;
-    cursor: pointer;
     z-index: 1001;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    color: #00ff88;
-}
-
-#menu-btn:hover {
-    background: rgba(50, 50, 50, 1);
-    border-color: #00ff88;
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
-}
-
-#menu-btn svg {
-    width: 24px;
-    height: 24px;
-    stroke: currentColor;
-    stroke-width: 2;
-    fill: none;
-}
-
-#ui-container {
-    position: absolute;
-    top: 75px;
-    left: 20px;
-    background: rgba(30, 30, 30, 0.9);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #ddd;
-    width: 280px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    color: white;
+    transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1),
+                opacity 0.2s cubic-bezier(0.2, 0, 0, 1);
     transform-origin: top left;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    visibility: visible;
-    z-index: 1000;
 }
 
-#ui-container.hidden {
+md-fab#menu-btn.m3-fab-hidden {
     opacity: 0;
-    transform: scale(0.95) translateY(-10px);
+    pointer-events: none;
+    transform: scale(0.4);
+}
+
+md-card#ui-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 360px;
+    padding: 0;
+    z-index: 1002;
+    transform-origin: 28px 28px;
+    transform: scale(0.1);
+    opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1),
+                opacity 0.25s cubic-bezier(0.05, 0.7, 0.1, 1),
+                visibility 0.3s;
+    overflow: hidden;
 }
 
-h1 {
-    font-size: 18px;
-    margin: 0 0 15px 0;
-    text-align: center;
-    color: #00ff88;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+md-card#ui-container.expanded {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
-.control-group {
-    margin-bottom: 15px;
-}
-
-label {
+.m3-settings-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #eee;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
 }
 
-/* Color Picker Style */
-input[type="color"] {
-    -webkit-appearance: none;
-    border: none;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    background: none;
-    padding: 0;
-}
-
-input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 0;
-}
-
-input[type="color"]::-webkit-color-swatch {
-    border: 2px solid #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-}
-
-.checkbox-container {
+.m3-settings-title-group {
     display: flex;
     align-items: center;
     gap: 10px;
-    cursor: pointer;
 }
 
-/* Round Checkbox Style */
-input[type="checkbox"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 32px;
-    height: 32px;
-    background: transparent;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
-    flex-shrink: 0;
+.m3-settings-icon {
+    font-size: 24px;
+    color: var(--md-sys-color-primary);
 }
 
-input[type="checkbox"]:checked {
-    background-color: #00ff88;
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-    border-color: #fff;
-}
-
-input[type="checkbox"]:checked::after {
-    content: '✓';
-    color: #003322;
+.m3-settings-title {
+    margin: 0;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 600;
+    letter-spacing: 0.15px;
+    color: var(--md-sys-color-on-surface);
+}
+
+.m3-settings-body {
+    padding-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.m3-control-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.m3-control-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.m3-control-col md-segmented-button-set {
+    width: 100%;
+}
+
+.m3-control-col md-segmented-button-set md-segmented-button {
+    flex: 1;
+}
+
+.m3-control-label-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.m3-control-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+}
+
+.m3-control-sub {
+    font-size: 11px;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Color Actions & Browser Accent */
+.m3-color-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.m3-color-wrapper {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
+    border: 2px solid var(--md-sys-color-outline-variant);
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.m3-color-wrapper:hover {
+    transform: scale(1.08);
+    border-color: var(--md-sys-color-primary);
+}
+
+.m3-color-wrapper input[type="color"] {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 52px;
+    height: 52px;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.m3-color-indicator {
     width: 100%;
     height: 100%;
+    border-radius: 50%;
+    display: block;
 }
 
-input[type="checkbox"]:hover {
-    transform: scale(1.1);
+/* Boring Mode Action Row */
+.m3-actions-row {
+    margin-top: 6px;
+    display: flex;
 }
 
-#stats {
-    margin-top: 15px;
-    font-size: 12px;
-    color: #aaa;
-    text-align: center;
-    border-top: 1px solid #555;
-    padding-top: 10px;
+.m3-actions-row md-button {
+    width: 100%;
 }
 
 .loading {
@@ -179,7 +228,7 @@ input[type="checkbox"]:hover {
     font-size: 24px;
     pointer-events: none;
     display: none;
-    color: #333;
+    color: var(--md-sys-color-on-surface);
     font-weight: bold;
 }
 
@@ -206,50 +255,29 @@ input[type="checkbox"]:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform: translate(-50%, -16px);
+    transform: translate(-50%, -50%);
     z-index: 500;
     pointer-events: none;
-    transition: transform 0.1s;
 }
 
-.marker-btn {
-    width: 32px;
-    height: 32px;
-    background: rgba(0, 255, 136, 0.9);
-    border: 2px solid white;
-    border-radius: 50%;
-    color: #003322;
-    font-weight: bold;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 0;
-    padding-bottom: 3px;
-    cursor: pointer;
+.marker-wrapper md-icon-button {
     pointer-events: auto;
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-    transition: transform 0.3s, background 0.3s;
-}
-
-.marker-btn:hover {
-    background: white;
-    transform: scale(1.15);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
 }
 
 .marker-label {
     margin-top: 4px;
     font-size: 11px;
     font-weight: 600;
-    color: #333;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 2px 6px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: var(--md-sys-color-on-surface);
+    background: var(--md-sys-color-surface-container-high);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    padding: 3px 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     white-space: nowrap;
     pointer-events: auto;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(4px);
 }
 
 #info-card {
@@ -258,10 +286,11 @@ input[type="checkbox"]:hover {
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
     width: 300px;
-    background: white;
-    border-radius: 16px;
+    background: var(--md-sys-color-surface-container-high);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: 20px;
     padding: 24px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     text-align: center;
     z-index: 2000;
     opacity: 0;
@@ -276,14 +305,15 @@ input[type="checkbox"]:hover {
 }
 
 #info-card h2 {
-    margin: 0 0 15px 0;
-    color: #333;
+    margin: 0 0 12px 0;
+    color: var(--md-sys-color-on-surface);
     font-size: 20px;
+    font-weight: 600;
 }
 
 /* Card body text style */
 #info-card p {
-    color: #555;
+    color: var(--md-sys-color-on-surface-variant);
     font-size: 14px;
     margin-bottom: 20px;
     line-height: 1.5;
@@ -291,28 +321,50 @@ input[type="checkbox"]:hover {
 
 .btn-link {
     display: inline-block;
-    background: #0044aa;
-    color: white;
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
     padding: 10px 20px;
-    border-radius: 8px;
+    border-radius: 20px;
     text-decoration: none;
-    font-weight: bold;
-    transition: background 0.2s;
+    font-weight: 500;
+    font-size: 14px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .btn-link:hover {
-    background: #003388;
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .close-card {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
+    top: 12px;
+    right: 14px;
+    font-size: 22px;
     cursor: pointer;
-    color: #999;
+    color: var(--md-sys-color-on-surface-variant);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .close-card:hover {
-    color: #333;
+    background-color: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+}
+
+/* Dialog Styles */
+md-dialog {
+    min-width: 280px;
+}
+
+#dialog-body {
+    display: block;
+    min-width: 280px;
 }

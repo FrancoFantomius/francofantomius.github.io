@@ -35,20 +35,221 @@ def generate_html(json_file, output_file, title, nav_links, original_html=None):
         description = get_meta_description(original_html)
 
     css = """
-        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; line-height: 1.6; padding: 0 20px; color: #333; }
-        h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .item { margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; border-radius: 5px; }
-        .item h2 { margin-top: 0; }
-        .item a { color: #0044aa; text-decoration: none; font-weight: bold; }
-        .item a:hover { text-decoration: underline; }
-        .nav { margin-bottom: 20px; text-align: right; }
-        .nav a { background: #eee; padding: 5px 10px; border-radius: 4px; text-decoration: none; color: #333; margin-left: 10px;}
+        :root {
+            --md-sys-color-primary: #005ac1;
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-primary-container: #d8e2ff;
+            --md-sys-color-on-primary-container: #001a41;
+            --md-sys-color-surface: #fdfcff;
+            --md-sys-color-on-surface: #1a1c1e;
+            --md-sys-color-surface-container: #edeef2;
+            --md-sys-color-surface-container-high: #e7e8ec;
+            --md-sys-color-surface-container-highest: #e2e2e6;
+            --md-sys-color-surface-variant: #e1e2ec;
+            --md-sys-color-on-surface-variant: #44474f;
+            --md-sys-color-outline: #74777f;
+            --md-sys-color-outline-variant: #c4c6d0;
+            --page-bg: #f8f9fa;
+            color-scheme: light;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --md-sys-color-primary: #adc6ff;
+                --md-sys-color-on-primary: #002e69;
+                --md-sys-color-primary-container: #004494;
+                --md-sys-color-on-primary-container: #d8e2ff;
+                --md-sys-color-surface: #111318;
+                --md-sys-color-on-surface: #e2e2e6;
+                --md-sys-color-surface-container: #1e2025;
+                --md-sys-color-surface-container-high: #282a2f;
+                --md-sys-color-surface-container-highest: #33353a;
+                --md-sys-color-surface-variant: #44474f;
+                --md-sys-color-on-surface-variant: #c4c6d0;
+                --md-sys-color-outline: #8e9099;
+                --md-sys-color-outline-variant: #44474f;
+                --page-bg: #111318;
+                color-scheme: dark;
+            }
+        }
+
+        [data-theme="dark"] {
+            --md-sys-color-primary: #adc6ff;
+            --md-sys-color-on-primary: #002e69;
+            --md-sys-color-primary-container: #004494;
+            --md-sys-color-on-primary-container: #d8e2ff;
+            --md-sys-color-surface: #111318;
+            --md-sys-color-on-surface: #e2e2e6;
+            --md-sys-color-surface-container: #1e2025;
+            --md-sys-color-surface-container-high: #282a2f;
+            --md-sys-color-surface-container-highest: #33353a;
+            --md-sys-color-surface-variant: #44474f;
+            --md-sys-color-on-surface-variant: #c4c6d0;
+            --md-sys-color-outline: #8e9099;
+            --md-sys-color-outline-variant: #44474f;
+            --page-bg: #111318;
+            color-scheme: dark;
+        }
+
+        [data-theme="light"] {
+            --md-sys-color-primary: #005ac1;
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-primary-container: #d8e2ff;
+            --md-sys-color-on-primary-container: #001a41;
+            --md-sys-color-surface: #fdfcff;
+            --md-sys-color-on-surface: #1a1c1e;
+            --md-sys-color-surface-container: #edeef2;
+            --md-sys-color-surface-container-high: #e7e8ec;
+            --md-sys-color-surface-container-highest: #e2e2e6;
+            --md-sys-color-surface-variant: #e1e2ec;
+            --md-sys-color-on-surface-variant: #44474f;
+            --md-sys-color-outline: #74777f;
+            --md-sys-color-outline-variant: #c4c6d0;
+            --page-bg: #f8f9fa;
+            color-scheme: light;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 860px;
+            margin: 0 auto;
+            line-height: 1.6;
+            padding: 32px 20px 64px 20px;
+            color: var(--md-sys-color-on-surface);
+            background-color: var(--page-bg);
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        header.m3-boring-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-bottom: 24px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+        }
+
+        h1.m3-page-title {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .m3-header-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .m3-cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        md-card.m3-boring-card {
+            display: block;
+            border-radius: 16px;
+            border: 1px solid var(--md-sys-color-outline-variant);
+            background-color: var(--md-sys-color-surface-container-high);
+            color: var(--md-sys-color-on-surface);
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        md-card.m3-boring-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .m3-card-content {
+            padding: 20px 24px 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .m3-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .m3-card-icon {
+            font-size: 24px;
+            color: var(--md-sys-color-primary);
+        }
+
+        .m3-card-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .m3-card-body {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.55;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .m3-card-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 8px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 16px 40px 16px;
+            }
+            h1.m3-page-title {
+                font-size: 1.6rem;
+            }
+            .m3-card-content {
+                padding: 16px 18px;
+            }
+        }
     """
 
-    nav_html = '<div class="nav">'
+    def get_item_icon(item):
+        if item.get('icon'):
+            return item.get('icon')
+        title_lower = item.get('title', '').lower()
+        if 'home' in title_lower:
+            return 'home'
+        if 'latex' in title_lower:
+            return 'functions'
+        if 'github' in title_lower or 'code' in title_lower:
+            return 'code'
+        if 'email' in title_lower or 'contact' in title_lower or item.get('link', '').startswith('mailto:'):
+            return 'mail'
+        if 'archive' in title_lower:
+            return 'history'
+        if 'book' in title_lower:
+            return 'menu_book'
+        if 'draw' in title_lower or 'symbol' in title_lower:
+            return 'draw'
+        if 'download' in item.get('body', '').lower():
+            return 'download'
+        return 'article'
+
+    nav_html = '<nav class="m3-header-nav">'
     for label, link in nav_links:
-        nav_html += f'<a href="{link}">{label}</a>'
-    nav_html += '</div>'
+        icon = 'arrow_back' if 'Normal' in label else ('home' if 'Home' in label else 'link')
+        variant = 'tonal' if 'Normal' in label else 'text'
+        nav_html += f'<md-button href="{link}" variant="{variant}" icon="{icon}">{label}</md-button>'
+    nav_html += '</nav>'
 
     items_html = ""
     for item in data:
@@ -58,21 +259,38 @@ def generate_html(json_file, output_file, title, nav_links, original_html=None):
             item_link = "boring_latex.html"
         
         button_text = "Visit Link"
+        button_icon = "open_in_new"
         if "Download" in item.get('body', ''):
              button_text = "Download File"
-        if item_link.endswith(".html"):
+             button_icon = "download"
+        elif item_link.endswith(".html"):
              button_text = "Visit Page"
+             button_icon = "arrow_forward"
+        elif item_link.startswith("mailto:"):
+             button_text = "Send Email"
+             button_icon = "mail"
 
         target_attr = ' target="_blank"'
-        if item.get('redirect'):
+        if item.get('redirect') or item_link.endswith('.html'):
             target_attr = ' target="_self"'
 
+        icon = get_item_icon(item)
+        body_text = item.get('body', '')
+        body_html = f'<p class="m3-card-body">{body_text}</p>' if body_text else ''
+
         items_html += f"""
-    <div class="item">
-        <h2>{item.get('title', 'No Title')}</h2>
-        <p>{item.get('body', '')}</p>
-        <a href="{item_link}"{target_attr}>{button_text}</a>
-    </div>"""
+        <md-card class="m3-boring-card" variant="outlined">
+            <div class="m3-card-content">
+                <div class="m3-card-header">
+                    <span class="material-symbols-outlined m3-card-icon">{icon}</span>
+                    <h2 class="m3-card-title">{item.get('title', 'No Title')}</h2>
+                </div>
+                {body_html}
+                <div class="m3-card-actions">
+                    <md-button href="{item_link}"{target_attr} variant="filled" icon="{button_icon}">{button_text}</md-button>
+                </div>
+            </div>
+        </md-card>"""
 
     html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -81,16 +299,65 @@ def generate_html(json_file, output_file, title, nav_links, original_html=None):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{description}">
     <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
     <style>{css}</style>
     <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+    <script type="importmap">
+        {{
+            "imports": {{
+                "lit": "https://cdn.jsdelivr.net/npm/lit@3.3.3/+esm",
+                "lit/decorators.js": "https://cdn.jsdelivr.net/npm/lit@3.3.3/decorators/+esm",
+                "lit/directives/unsafe-html.js": "https://cdn.jsdelivr.net/npm/lit@3.3.3/directives/unsafe-html/+esm",
+                "@francofantomius/material-components/theme": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/tokens/index.js",
+                "@francofantomius/material-components/card": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/card/card.js",
+                "@francofantomius/material-components/button": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/button/button.js",
+                "@francofantomius/material-components/icon-button": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/components/icon-button/icon-button.js",
+                "@francofantomius/material-components": "https://cdn.jsdelivr.net/npm/@francofantomius/material-components@1.4.1/dist/index.js"
+            }}
+        }}
+    </script>
+    <script type="module">
+        import '@francofantomius/material-components/card';
+        import '@francofantomius/material-components/button';
+        import '@francofantomius/material-components/icon-button';
+        import {{ applyTheme, lightColorScheme, darkColorScheme, generateColorScheme }} from '@francofantomius/material-components/theme';
+
+        // Synchronize with stored site theme and custom/accent color
+        const savedTheme = localStorage.getItem('site-theme') || 'system';
+        const savedColor = localStorage.getItem('site-color') || '#0044aa';
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function updateTheme() {{
+            const isDark = savedTheme === 'dark' || (savedTheme === 'system' && mediaQuery.matches);
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            try {{
+                const dynamicScheme = generateColorScheme(savedColor, isDark);
+                applyTheme(dynamicScheme, document.documentElement);
+            }} catch (e) {{
+                const fallbackScheme = isDark ? darkColorScheme : lightColorScheme;
+                applyTheme(fallbackScheme, document.documentElement);
+            }}
+        }}
+
+        updateTheme();
+        mediaQuery.addEventListener('change', () => {{
+            if (savedTheme === 'system') updateTheme();
+        }});
+    </script>
 </head>
 <body>
 
-    {nav_html}
+    <header class="m3-boring-header">
+        <h1 class="m3-page-title">{title}</h1>
+        {nav_html}
+    </header>
 
-    <h1>{title}</h1>
-
-    {items_html}
+    <main class="m3-cards-list">
+        {items_html}
+    </main>
 
 </body>
 </html>
