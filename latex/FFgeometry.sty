@@ -13,8 +13,9 @@
 % ==============================================================================
 % 1. GEOMETRIC SPACES & SPAN (Moved from MACROS.sty)
 % ==============================================================================
-% Note: \span is a TeX primitive, so we use renewcommand with care for math mode
-\renewcommand{\span}{\operatorname{Span}}
+% Note: \span is a TeX primitive essential for align/halign environments.
+% Redefining it breaks align*, align, split, etc. with "Missing # inserted in alignment preamble".
+\DeclareMathOperator{\Span}{Span}
 
 % Projective, Affine, and Algebraic Variety Spaces
 \renewcommand{\P}{\mathbb{P}}
