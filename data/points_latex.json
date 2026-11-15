@@ -58,7 +58,7 @@
     },
     {
         "title": "Geometry Package",
-        "link": "https://francofantomius.com/latex/geometry.sty",
+        "link": "https://francofantomius.com/latex/FFgeometry.sty",
         "short": "Geometry",
         "icon": "deployed_code",
         "body": "The aim of this package is to write a comprehensive list of commands one needs to write about geometry in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{FFgeometry} in the preamble."
