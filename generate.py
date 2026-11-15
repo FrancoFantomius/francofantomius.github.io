@@ -127,7 +127,7 @@ def update_sitemap(sitemap_file, points_files):
             return ""
         # Remove domains and normalize slashes
         link = re.sub(r'^https?://(www\.)?francofantomius\.com/', '', link)
-        link = re.sub(r'^https?://(www\.)?github\.com/', 'github.com/', link)
+        link = re.sub(r'^https?://(www\.)?github\.com/+', 'github.com/', link)
         link = link.strip('/')
         return link
 
@@ -167,6 +167,82 @@ def update_sitemap(sitemap_file, points_files):
                 marker['title'] = new_title
                 marker['desc'] = new_desc
                 updated = True
+
+    # Find all links already covered in sitemap
+    covered_links = set()
+    used_paths = set()
+    used_labels = set()
+
+    for key, marker in sitemap.items():
+        used_labels.add(key)
+        used_paths.add(tuple(marker.get('path', [])))
+        norm_sitemap_link = normalize_link(marker.get('link'))
+        if norm_sitemap_link:
+            covered_links.add(norm_sitemap_link)
+        if norm_sitemap_link == 'boring_latex.html':
+            covered_links.add('latex.html')
+        elif norm_sitemap_link == 'boring_index.html':
+            covered_links.add('index.html')
+
+    # Palette for newly generated nodes
+    palette = [
+        "#0284c7", "#0d9488", "#0ea5e9", "#06b6d4",
+        "#6366f1", "#8b5cf6", "#ec4899", "#f43f5e",
+        "#10b981", "#14b8a6", "#3b82f6", "#a855f7"
+    ]
+
+    def get_next_label():
+        for code in range(ord('A'), ord('Z') + 1):
+            char = chr(code)
+            if char not in used_labels:
+                return char
+        for c1 in range(ord('A'), ord('Z') + 1):
+            for c2 in range(ord('A'), ord('Z') + 1):
+                pair = f"{chr(c1)}{chr(c2)}"
+                if pair not in used_labels:
+                    return pair
+        return "X"
+
+    def get_next_path():
+        queue = [[0]]
+        while queue:
+            cur = queue.pop(0)
+            if tuple(cur) not in used_paths:
+                return cur
+            if len(cur) < 8:
+                queue.append(cur + [0])
+                queue.append(cur + [1])
+        return [0, 0, 0, 0]
+
+    # Add any unmapped points from points files into sitemap
+    for pt in all_points:
+        raw_link = pt.get('link', '')
+        norm = normalize_link(raw_link)
+        if not norm or norm in covered_links:
+            continue
+
+        label = get_next_label()
+        used_labels.add(label)
+        path = get_next_path()
+        used_paths.add(tuple(path))
+
+        final_link = raw_link
+        if not re.match(r'^(https?://|mailto:)', raw_link):
+            final_link = f"/{raw_link.lstrip('/')}"
+        elif raw_link.startswith('https://francofantomius.com/'):
+            final_link = '/' + raw_link.replace('https://francofantomius.com/', '').lstrip('/')
+
+        color_index = len(sitemap) % len(palette)
+        sitemap[label] = {
+            "label": label,
+            "title": pt.get('short') or pt.get('title', 'Link'),
+            "link": final_link,
+            "desc": pt.get('body', ''),
+            "color": palette[color_index],
+            "path": path
+        }
+        covered_links.add(norm)
+        updated = True
 
     if updated:
         with open(sitemap_file, 'w', encoding='utf-8') as f:
@@ -223,29 +299,33 @@ def generate_sitemap_xml(sitemap_file, xml_file):
     print(f"Generated {xml_file}")
 
 def main():
-    # Generate boring_index.html
+    # Ensure build directory exists
+    os.makedirs('build', exist_ok=True)
+
+    # Generate boring_index.html in build/
     generate_html(
-        json_file='points.json',
-        output_file='boring_index.html',
+        json_file=os.path.join('data', 'points.json'),
+        output_file=os.path.join('build', 'boring_index.html'),
         title='FrancoFantomius (Boring Mode)',
         nav_links=[('Switch to Normal Mode', 'index.html')],
         original_html='index.html'
     )
 
-    # Generate boring_latex.html
+    # Generate boring_latex.html in build/
     generate_html(
-        json_file='points_latex.json',
-        output_file='boring_latex.html',
+        json_file=os.path.join('data', 'points_latex.json'),
+        output_file=os.path.join('build', 'boring_latex.html'),
         title='LaTeX (Boring Mode)',
         nav_links=[('Home', 'boring_index.html'), ('Switch to Normal Mode', 'latex.html')],
         original_html='latex.html'
     )
 
     # Update sitemap.json
-    update_sitemap('sitemap.json', ['points.json', 'points_latex.json'])
+    sitemap_path = os.path.join('data', 'sitemap.json')
+    update_sitemap(sitemap_path, [os.path.join('data', 'points.json'), os.path.join('data', 'points_latex.json')])
 
-    # Generate sitemap.xml
-    generate_sitemap_xml('sitemap.json', 'sitemap.xml')
+    # Generate sitemap.xml in build/
+    generate_sitemap_xml(sitemap_path, os.path.join('build', 'sitemap.xml'))
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,92 @@
+%% exercises.sty
+%% https://francofantomius.com/latex/exercises.sty
+
+%% A package containing everything to write the exercises in tex
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{exercises}[2026/11/15 v1.0.0]
+
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{amsfonts}
+\RequirePackage{enumerate}
+
+
+% Exercises
+\newtheoremstyle{exercise}%
+  {\topsep}%
+  {\topsep}%
+  {\normalfont}%
+  {}%
+  {\bfseries}%
+  {}%
+  {\newline}%
+  {}
+
+\theoremstyle{exercise}
+\newtheorem{exercise}{Exercise}
+
+
+% Solution
+\newenvironment{solution}[1][Solution]{%
+    \renewcommand{\qedsymbol}{$\lozenge$}%
+    \begin{proof}[\normalfont\bfseries #1]%
+    \par\nopagebreak
+}{%
+  \end{proof}%
+}
+
+
+% MACROS
+
+% ===== Easy Format =====
+\newcommand{\ds}{\displaystyle}
+
+% ===== Number Sets =====
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\K}{\mathbb{K}}
+
+% ===== Calligraphy =====
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calV}{\mathcal{V}}
+\newcommand{\calW}{\mathcal{W}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calY}{\mathcal{Y}}
+\newcommand{\calZ}{\mathcal{Z}}
+
+% ===== Frankfut font =====
+\newcommand{\franka}{\mathfrak{a}}
+\newcommand{\frankb}{\mathfrak{b}}
+\newcommand{\frankc}{\mathfrak{c}}
+\newcommand{\frankm}{\mathfrak{m}}
+\newcommand{\frankp}{\mathfrak{p}}
+\newcommand{\frankq}{\mathfrak{q}}
+\newcommand{\frankA}{\mathfrak{A}}
+\newcommand{\frankB}{\mathfrak{B}}
+\newcommand{\frankC}{\mathfrak{C}}
+\newcommand{\frankM}{\mathfrak{M}}
+\newcommand{\frankP}{\mathfrak{P}}
+\newcommand{\frankQ}{\mathfrak{Q}}
+
+% ===== Geometry =====
+\renewcommand{\span}{\operatorname{Span}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\Ip}{\mathbb{I}_p}
+\newcommand{\V}{\mathbb{V}}
+
+\endinput

@@ -52,22 +52,23 @@ Since this project uses ES6 modules (`<script type="module">`) and external impo
 
 ### Generating Boring Mode Pages
 
-The "Boring Mode" pages (`boring_index.html` and `boring_latex.html`) are generated automatically based on the data in `points.json` and `points_latex.json`.
+The "Boring Mode" pages (`boring_index.html` and `boring_latex.html`) and `sitemap.xml` are generated automatically based on the data in `data/points.json` and `data/points_latex.json`, and output to the `build/` folder.
 
 To regenerate them (e.g., after updating links), run:
 
 ```bash
-python generate_boring.py
+python generate.py
 ```
 
 ## Project Structure
 
-*   **`index.html` / `script.js`**: Main entry point and logic for the Sierpiński Tetrahedron.
+*   **`index.html` / `js/script.js`**: Main entry point and logic for the Sierpiński Tetrahedron.
     *   `generateFractal()` handles the recursive geometry creation.
-*   **`latex/latex.html` / `latex.js`**: Specific page for the Menger Sponge fractal.
-*   **`boring_index.html` / `boring_latex.html`**: Static, low-tech counterparts to the 3D pages.
-*   **`generate_boring.py`**: Python script to build the boring mode HTML files from JSON data.
-*   **`points.json` / `points_latex.json`**: Data files containing coordinates and metadata for the interactive markers.
+*   **`latex.html` / `js/latex.js`**: Specific page for the Menger Sponge fractal.
+*   **`404.html` / `js/404.js`**: Interactive site map and 404 page.
+*   **`boring_index.html` / `boring_latex.html`**: Static, low-tech counterparts to the 3D pages (generated in `build/`).
+*   **`generate.py`**: Python script to build the boring mode HTML files and sitemaps into `build/`.
+*   **`data/points.json` / `data/points_latex.json` / `data/sitemap.json`**: Data files containing coordinates and metadata for interactive markers and site mapping.
 *   **`CNAME`**: GitHub Pages configuration file to point to the custom domain `francofantomius.com`.
 
 ## Customization

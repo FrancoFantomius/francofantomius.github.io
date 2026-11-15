@@ -1,0 +1,222 @@
+{
+    "O": {
+        "label": "O",
+        "title": "Home (3D)",
+        "link": "/index.html",
+        "desc": "Return to the main page featuring the Sierpiński Tetrahedron.",
+        "color": "#475569",
+        "path": []
+    },
+    "A": {
+        "label": "A",
+        "title": "Interactive Site Map",
+        "link": "/404.html",
+        "desc": "Explore the site branches visually. Scroll up/down to grow/shrink the tree.",
+        "color": "#0f172a",
+        "path": [
+            0
+        ]
+    },
+    "B": {
+        "label": "B",
+        "title": "LaTeX",
+        "link": "/latex.html",
+        "desc": "A useful page for writing in LaTeX.",
+        "color": "#0044aa",
+        "path": [
+            0,
+            0
+        ]
+    },
+    "C": {
+        "label": "C",
+        "title": "GitHub",
+        "link": "https://github.com/FrancoFantomius/francofantomius.github.io",
+        "desc": "Explore the source code of this project and contribute to its development on GitHub.",
+        "color": "#0284c7",
+        "path": [
+            0,
+            1
+        ]
+    },
+    "D": {
+        "label": "D",
+        "title": "LaTeX (Boring)",
+        "link": "/boring_latex.html",
+        "desc": "A useful page for writing in LaTeX.",
+        "color": "#334155",
+        "path": [
+            0,
+            0,
+            0
+        ]
+    },
+    "E": {
+        "label": "E",
+        "title": "MACROS",
+        "link": "/latex/MACROS.sty",
+        "desc": "A collection of my most used MACROS in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{MACROS} in the preamble.",
+        "color": "#0d9488",
+        "path": [
+            0,
+            0,
+            1
+        ]
+    },
+    "F": {
+        "label": "F",
+        "title": "Home (Boring)",
+        "link": "/boring_index.html",
+        "desc": "A static, text-only version of the main website landing page.",
+        "color": "#5b21b6",
+        "path": [
+            0,
+            1,
+            0
+        ]
+    },
+    "G": {
+        "label": "G",
+        "title": "Email",
+        "link": "mailto:mail@francofantomius.com",
+        "desc": "Do you have questions or comments? Send me an email!",
+        "color": "#2563eb",
+        "path": [
+            0,
+            1,
+            1
+        ]
+    },
+    "H": {
+        "label": "H",
+        "title": "Styles",
+        "link": "/latex/styles.sty",
+        "desc": "A list of common styles for theorems, lemmas, etc. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{styles} in the preamble.",
+        "color": "#0ea5e9",
+        "path": [
+            0,
+            0,
+            1,
+            0
+        ]
+    },
+    "I": {
+        "label": "I",
+        "title": "Physics",
+        "link": "/latex/physics.sty",
+        "desc": "A collection of shortcuts for Physics. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{physics} in the preamble.",
+        "color": "#06b6d4",
+        "path": [
+            0,
+            0,
+            1,
+            1
+        ]
+    },
+    "J": {
+        "label": "J",
+        "title": "Sierpiński triangle",
+        "link": "https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle",
+        "desc": "The Sierpiński triangle is a fractal with the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.",
+        "color": "#3b82f6",
+        "path": [
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    "K": {
+        "label": "K",
+        "title": "Internet Archive",
+        "link": "https://archive.org/",
+        "desc": "The wayback machine of the internet.",
+        "color": "#a855f7",
+        "path": [
+            0,
+            0,
+            0,
+            1
+        ]
+    },
+    "L": {
+        "label": "L",
+        "title": "Inverted Menger Sponge",
+        "link": "https://en.wikipedia.org/wiki/Menger_sponge",
+        "desc": "An 'inverted' Menger sponge or technically the Complement of the Menger Sponge. While the standard Menger sponge is formed by repeatedly drilling holes out of a solid cube, the inverted version is the shape of the holes themselves. This results in adding multiple 3D crosses each iteration.",
+        "color": "#0284c7",
+        "path": [
+            0,
+            1,
+            0,
+            0
+        ]
+    },
+    "M": {
+        "label": "M",
+        "title": "Wikibook",
+        "link": "https://en.wikibooks.org/wiki/LaTeX",
+        "desc": "The definitive guide to LaTeX. Comprehensive documentation for all your formatting needs.",
+        "color": "#0d9488",
+        "path": [
+            0,
+            1,
+            0,
+            1
+        ]
+    },
+    "N": {
+        "label": "N",
+        "title": "Detexify",
+        "link": "https://detexify.kirelabs.org/classify.html",
+        "desc": "Draw a symbol and get the corresponding LaTeX command. Extremely useful for finding specific symbols.",
+        "color": "#0ea5e9",
+        "path": [
+            0,
+            1,
+            1,
+            0
+        ]
+    },
+    "P": {
+        "label": "P",
+        "title": "CTAN",
+        "link": "https://www.ctan.org/",
+        "desc": "The Comprehensive TEX Archive Network. The central place for all things TeX and LaTeX.",
+        "color": "#06b6d4",
+        "path": [
+            0,
+            1,
+            1,
+            1
+        ]
+    },
+    "Q": {
+        "label": "Q",
+        "title": "Exercises",
+        "link": "/latex/exercises.sty",
+        "desc": "This is a package to set up everything needed to write exercises and solutions in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{exercises} in the preamble.",
+        "color": "#6366f1",
+        "path": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    "R": {
+        "label": "R",
+        "title": "CLI",
+        "link": "https://github.com/FrancoFantomius/latex-cli/releases",
+        "desc": "A command line tool to setup a LaTeX Project. Creating a main.tex file and adding all the MACROS and dependencies needed.",
+        "color": "#8b5cf6",
+        "path": [
+            0,
+            0,
+            0,
+            0,
+            1
+        ]
+    }
+}

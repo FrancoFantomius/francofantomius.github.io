@@ -16,12 +16,12 @@
     const R_SCALE = 0.78;                // Right length scaling
     const MAX_DEPTH = 10;                // Maximum recursion depth
 
-    // Point mappings loaded dynamically from sitemap.json
+    // Point mappings loaded dynamically from data/sitemap.json
     let MARKERS_CONFIG = {};
 
     async function loadSitemap() {
         try {
-            const response = await fetch('/sitemap.json');
+            const response = await fetch('/data/sitemap.json');
             MARKERS_CONFIG = await response.json();
             initMarkers();
             resizeCanvas();
