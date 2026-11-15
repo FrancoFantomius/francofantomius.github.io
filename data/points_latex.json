@@ -57,11 +57,11 @@
         "body": "This is a package to set up everything needed to write exercises and solutions in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{exercises} in the preamble."
     },
     {
-        "title": "Physics Macros",
-        "link": "https://francofantomius.com/latex/physics.sty",
-        "short": "Physics",
+        "title": "Geometry Package",
+        "link": "https://francofantomius.com/latex/geometry.sty",
+        "short": "Geometry",
         "icon": "deployed_code",
-        "body": "A collection of shortcuts for Physics. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{physics} in the preamble."
+        "body": "The aim of this package is to write a comprehensive list of commands one needs to write about geometry in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{FFgeometry} in the preamble."
     },
     {
         "title": "LaTeX CLI",
@@ -69,5 +69,12 @@
         "short": "CLI",
         "icon": "terminal",
         "body": "A command line tool to setup a LaTeX Project. Creating a main.tex file and adding all the MACROS and dependencies needed."
+    },
+    {
+        "title": "Physics Macros",
+        "link": "https://francofantomius.com/latex/physics.sty",
+        "short": "Physics",
+        "icon": "deployed_code",
+        "body": "A collection of shortcuts for Physics. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{physics} in the preamble."
     }
 ]

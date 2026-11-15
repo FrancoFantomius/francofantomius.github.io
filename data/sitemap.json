@@ -1,9 +1,9 @@
 {
     "O": {
         "label": "O",
-        "title": "Home (3D)",
+        "title": "Home",
         "link": "/index.html",
-        "desc": "Return to the main page featuring the Sierpiński Tetrahedron.",
+        "desc": "Go back to the home page",
         "color": "#475569",
         "path": []
     },
@@ -67,7 +67,7 @@
         "label": "F",
         "title": "Home (Boring)",
         "link": "/boring_index.html",
-        "desc": "A static, text-only version of the main website landing page.",
+        "desc": "Go back to the home page",
         "color": "#5b21b6",
         "path": [
             0,
@@ -216,6 +216,34 @@
             0,
             0,
             0,
+            1
+        ]
+    },
+    "S": {
+        "label": "S",
+        "title": "Email",
+        "link": "mailto:site@francofantomius.com",
+        "desc": "Do you have questions or comments? Send me an email!",
+        "color": "#ec4899",
+        "path": [
+            0,
+            0,
+            0,
+            1,
+            0
+        ]
+    },
+    "T": {
+        "label": "T",
+        "title": "Geometry",
+        "link": "/latex/geometry.sty",
+        "desc": "The aim of this package is to write a comprehensive list of commands one needs to write about geometry in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{FFgeometry} in the preamble.",
+        "color": "#f43f5e",
+        "path": [
+            0,
+            0,
+            0,
+            1,
             1
         ]
     }

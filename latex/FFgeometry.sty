@@ -1,0 +1,151 @@
+%% FFgeometry.sty
+%% https://francofantomius.com/latex/geometry.sty
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{FFgeometry}[2026/11/15 v1.0.0]
+
+% Required packages
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsfonts}
+\RequirePackage{mathtools}
+
+% ==============================================================================
+% 1. GEOMETRIC SPACES & SPAN (Moved from MACROS.sty)
+% ==============================================================================
+% Note: \span is a TeX primitive, so we use renewcommand with care for math mode
+\renewcommand{\span}{\operatorname{Span}}
+
+% Projective, Affine, and Algebraic Variety Spaces
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\Ip}{\mathbb{I}_p}
+\newcommand{\V}{\mathbb{V}}
+
+% Hyperbolic & Sphere spaces
+\newcommand{\Sph}{\mathbb{S}}
+\newcommand{\Hyp}{\mathbb{H}}
+
+% ==============================================================================
+% 2. ELEMENTARY & SYNTHETIC GEOMETRY
+% ==============================================================================
+% Segments, rays, arcs, lines, and angles
+\newcommand{\seg}[1]{\overline{#1}}
+\newcommand{\ray}[1]{\overrightarrow{#1}}
+\newcommand{\lin}[1]{\overleftrightarrow{#1}}
+\newcommand{\arc}[1]{\wideparen{#1}}
+\newcommand{\tri}{\triangle}
+\newcommand{\ang}{\angle}
+\newcommand{\measang}{\measuredangle}
+\newcommand{\sphang}{\sphericalangle}
+
+% Relations: parallel, perpendicular, congruent, similar
+\newcommand{\paral}{\parallel}
+\newcommand{\nparal}{\nparallel}
+\newcommand{\perpind}{\perp}
+\newcommand{\nperp}{\not\perp}
+\newcommand{\congr}{\cong}
+\newcommand{\simil}{\sim}
+
+% Coordinate / point notation & distances
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\area}{\operatorname{Area}}
+\newcommand{\vol}{\operatorname{Vol}}
+\newcommand{\perim}{\operatorname{Perim}}
+
+% ==============================================================================
+% 3. ANALYTIC & VECTOR GEOMETRY
+% ==============================================================================
+% Inner products, norms, and cross products
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\inner}{\langle}{\rangle}
+\newcommand{\cprod}{\times}
+\newcommand{\dprod}{\cdot}
+
+% Coordinates, affine spans, convex hulls
+\newcommand{\aff}{\operatorname{aff}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\cone}{\operatorname{cone}}
+\newcommand{\bary}{\operatorname{bary}}
+
+% ==============================================================================
+% 4. DIFFERENTIAL GEOMETRY & TOPOLOGY
+% ==============================================================================
+% Bundles, Tangent and Cotangent spaces
+\newcommand{\TM}{T M}
+\newcommand{\TstarM}{T^* M}
+\newcommand{\TpM}{T_p M}
+\newcommand{\TstarpM}{T^*_p M}
+\newcommand{\Tangent}{\operatorname{T}}
+
+% Vector fields, forms, and exterior algebra
+\newcommand{\VF}{\mathfrak{X}}
+\newcommand{\Forms}{\Omega}
+\newcommand{\extp}{\wedge}
+\newcommand{\wprod}{\wedge}
+\newcommand{\intprod}{\iota}
+\newcommand{\Lie}{\mathcal{L}}
+
+% Connections, curvature, and metrics
+\newcommand{\conn}{\nabla}
+\newcommand{\covd}{\nabla}
+\newcommand{\Riem}{\operatorname{Riem}}
+\newcommand{\Ric}{\operatorname{Ric}}
+\newcommand{\Scal}{\operatorname{Scal}}
+\newcommand{\Hess}{\operatorname{Hess}}
+\newcommand{\ddt}{\frac{\mathrm{d}}{\mathrm{d}t}}
+\newcommand{\diff}{\mathrm{d}}
+
+% Immersions, embeddings, and submanifolds
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\genus}{\operatorname{genus}}
+\newcommand{\EulerChar}{\chi}
+
+% ==============================================================================
+% 5. ALGEBRAIC GEOMETRY & SCHEME THEORY
+% ==============================================================================
+% Functors and Schemes
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\mSpec}{\operatorname{mSpec}}
+\newcommand{\Proj}{\operatorname{Proj}}
+\newcommand{\Pic}{\operatorname{Pic}}
+\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\Div}{\operatorname{Div}}
+\newcommand{\Prin}{\operatorname{Prin}}
+\newcommand{\Supp}{\operatorname{Supp}}
+\newcommand{\Sing}{\operatorname{Sing}}
+\newcommand{\Reg}{\operatorname{Reg}}
+
+% Sheaves and Cohomology
+\newcommand{\sheaf}[1]{\mathcal{#1}}
+\newcommand{\OX}{\mathcal{O}_X}
+\newcommand{\OY}{\mathcal{O}_Y}
+\newcommand{\sheafHom}{\mathcal{H}\mathrm{om}}
+\newcommand{\sheafExt}{\mathcal{E}\mathrm{xt}}
+\newcommand{\sheafTor}{\mathcal{T}\mathrm{or}}
+\newcommand{\Hodge}{\star}
+
+% Morphisms and Invariants
+\newcommand{\Mor}{\operatorname{Mor}}
+\newcommand{\Grass}{\operatorname{Gr}}
+\newcommand{\Hilb}{\operatorname{Hilb}}
+
+% ==============================================================================
+% 6. TRANSFORMATION GROUPS & SYMMETRY
+% ==============================================================================
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\OO}{\operatorname{O}}
+\newcommand{\SO}{\operatorname{SO}}
+\newcommand{\U}{\operatorname{U}}
+\newcommand{\SU}{\operatorname{SU}}
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\Isom}{\operatorname{Isom}}
+\newcommand{\Aff}{\operatorname{Aff}}
+\newcommand{\Sym}{\operatorname{Sym}}
+
+\endinput
