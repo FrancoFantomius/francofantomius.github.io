@@ -2,7 +2,7 @@
 %% https://francofantomius.com/latex/geometry.sty
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{FFgeometry}[2026/11/15 v1.0.0]
+\ProvidesPackage{FFgeometry}[2026/11/16 v1.1.0]
 
 % Required packages
 \RequirePackage{amsmath}
@@ -71,6 +71,14 @@
 \newcommand{\conv}{\operatorname{conv}}
 \newcommand{\cone}{\operatorname{cone}}
 \newcommand{\bary}{\operatorname{bary}}
+
+% Matrices & Linear Algebra
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Id}{Id}
+\newcommand{\transpose}[1]{{#1}^{\mathsf{T}}}
 
 % ==============================================================================
 % 4. DIFFERENTIAL GEOMETRY & TOPOLOGY

@@ -2,12 +2,13 @@
 %% https://francofantomius.com/latex/MACROS.sty
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{MACROS}[2026/11/15 v1.3.0]
+\ProvidesPackage{MACROS}[2026/11/16 v1.4.0]
 
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amssymb}
 \RequirePackage{amsfonts}
+\RequirePackage{mathtools}
 
 % ====== Personalized Theorems ======
 %\theoremstyle{defstyle} %<---- to use this you also need https://francofantomius.com/latex/styles.sty
@@ -126,5 +127,30 @@
 \newcommand{\frankX}{\mathfrak{X}}
 \newcommand{\frankY}{\mathfrak{Y}}
 \newcommand{\frankZ}{\mathfrak{Z}}
+
+% ===== Set Theory, Logic & Cardinality =====
+\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\symdiff}{\mathbin{\Delta}}
+\newcommand{\cpl}[1]{{#1}^{\mathsf{c}}}
+
+% ===== Abstract Algebra & Number Theory =====
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Inn}{Inn}
+\DeclareMathOperator{\Out}{Out}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\chara}{char}
+\DeclareMathOperator{\lcm}{lcm}
+\newcommand{\nsg}{\trianglelefteq}
+\newcommand{\pnsg}{\triangleleft}
+
+% ===== Probability & Statistics =====
+\newcommand{\E}{\mathbb{E}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+
+% ===== Delimiters & Evaluation =====
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\newcommand{\eval}[3]{\left. #1 \right|_{#2}^{#3}}
 
 \endinput

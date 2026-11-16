@@ -64,6 +64,13 @@
         "body": "The aim of this package is to write a comprehensive list of commands one needs to write about geometry in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{FFgeometry} in the preamble."
     },
     {
+        "title": "Analysis Package",
+        "link": "https://francofantomius.com/latex/FFanalysis.sty",
+        "short": "Analysis",
+        "icon": "deployed_code",
+        "body": "This is a package containing MACROS commonly used for writing about Analysis in LaTeX. To use the file just move it to the same directory of your LaTeX file after downloading it and then add \\usepackage{FFanalysis} in the preamble."
+    },
+    {
         "title": "LaTeX CLI",
         "link": "https://github.com/FrancoFantomius/latex-cli/releases",
         "short": "CLI",

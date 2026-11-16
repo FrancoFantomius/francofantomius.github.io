@@ -4,12 +4,13 @@
 %% A package containing everything to write the exercises in tex
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{exercises}[2026/11/15 v1.0.0]
+\ProvidesPackage{exercises}[2026/11/16 v1.1.0]
 
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 \RequirePackage{amssymb}
 \RequirePackage{amsfonts}
+\RequirePackage{mathtools}
 \RequirePackage{enumerate}
 
 
@@ -38,6 +39,26 @@
 }
 
 
+% Personalized Theorems (from MACROS.sty)
+% Adapts to the document class (uses chapter if available, otherwise section)
+\ifx\chapter\undefined
+	\newtheorem{theorem}{Theorem}[section]
+	\newtheorem{corollary}{Corollary}[section]
+	\newtheorem{lemma}{Lemma}[section]
+	\newtheorem{proposition}{Proposition}[section]
+\else
+	\newtheorem{theorem}{Theorem}[chapter]
+	\newtheorem{corollary}{Corollary}[chapter]
+	\newtheorem{lemma}{Lemma}[chapter]
+	\newtheorem{proposition}{Proposition}[chapter]
+\fi
+
+\newtheorem*{definition}{Definition}
+\newtheorem*{example}{Example}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{note}{Note}[section]
+
+
 % MACROS
 
 % ===== Easy Format =====
@@ -58,11 +79,22 @@
 \newcommand{\calC}{\mathcal{C}}
 \newcommand{\calD}{\mathcal{D}}
 \newcommand{\calE}{\mathcal{E}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calH}{\mathcal{H}}
 \newcommand{\calI}{\mathcal{I}}
 \newcommand{\calJ}{\mathcal{J}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\calL}{\mathcal{L}}
 \newcommand{\calM}{\mathcal{M}}
 \newcommand{\calN}{\mathcal{N}}
 \newcommand{\calO}{\mathcal{O}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calT}{\mathcal{T}}
+\newcommand{\calU}{\mathcal{U}}
 \newcommand{\calV}{\mathcal{V}}
 \newcommand{\calW}{\mathcal{W}}
 \newcommand{\calX}{\mathcal{X}}
@@ -73,22 +105,209 @@
 \newcommand{\franka}{\mathfrak{a}}
 \newcommand{\frankb}{\mathfrak{b}}
 \newcommand{\frankc}{\mathfrak{c}}
+\newcommand{\frankd}{\mathfrak{d}}
+\newcommand{\franke}{\mathfrak{e}}
+\newcommand{\frankf}{\mathfrak{f}}
+\newcommand{\frankg}{\mathfrak{g}}
+\newcommand{\frankh}{\mathfrak{h}}
+\newcommand{\franki}{\mathfrak{i}}
+\newcommand{\frankj}{\mathfrak{j}}
+\newcommand{\frankk}{\mathfrak{k}}
+\newcommand{\frankl}{\mathfrak{l}}
 \newcommand{\frankm}{\mathfrak{m}}
+\newcommand{\frankn}{\mathfrak{n}}
+\newcommand{\franko}{\mathfrak{o}}
 \newcommand{\frankp}{\mathfrak{p}}
 \newcommand{\frankq}{\mathfrak{q}}
+\newcommand{\frankr}{\mathfrak{r}}
+\newcommand{\franks}{\mathfrak{s}}
+\newcommand{\frankt}{\mathfrak{t}}
+\newcommand{\franku}{\mathfrak{u}}
+\newcommand{\frankv}{\mathfrak{v}}
+\newcommand{\frankw}{\mathfrak{w}}
+\newcommand{\frankx}{\mathfrak{x}}
+\newcommand{\franky}{\mathfrak{y}}
+\newcommand{\frankz}{\mathfrak{z}}
+
 \newcommand{\frankA}{\mathfrak{A}}
 \newcommand{\frankB}{\mathfrak{B}}
 \newcommand{\frankC}{\mathfrak{C}}
+\newcommand{\frankD}{\mathfrak{D}}
+\newcommand{\frankE}{\mathfrak{E}}
+\newcommand{\frankF}{\mathfrak{F}}
+\newcommand{\frankG}{\mathfrak{G}}
+\newcommand{\frankH}{\mathfrak{H}}
+\newcommand{\frankI}{\mathfrak{I}}
+\newcommand{\frankJ}{\mathfrak{J}}
+\newcommand{\frankK}{\mathfrak{K}}
+\newcommand{\frankL}{\mathfrak{L}}
 \newcommand{\frankM}{\mathfrak{M}}
+\newcommand{\frankN}{\mathfrak{N}}
+\newcommand{\frankO}{\mathfrak{O}}
 \newcommand{\frankP}{\mathfrak{P}}
 \newcommand{\frankQ}{\mathfrak{Q}}
+\newcommand{\frankR}{\mathfrak{R}}
+\newcommand{\frankS}{\mathfrak{S}}
+\newcommand{\frankT}{\mathfrak{T}}
+\newcommand{\frankU}{\mathfrak{U}}
+\newcommand{\frankV}{\mathfrak{V}}
+\newcommand{\frankW}{\mathfrak{W}}
+\newcommand{\frankX}{\mathfrak{X}}
+\newcommand{\frankY}{\mathfrak{Y}}
+\newcommand{\frankZ}{\mathfrak{Z}}
 
-% ===== Geometry =====
-\renewcommand{\span}{\operatorname{Span}}
+
+% ==============================================================================
+% GEOMETRY (from FFgeometry.sty)
+% ==============================================================================
+
+% ==============================================================================
+% 1. GEOMETRIC SPACES & SPAN
+% ==============================================================================
+% Note: \span is a TeX primitive essential for align/halign environments.
+% Redefining it breaks align*, align, split, etc. with "Missing # inserted in alignment preamble".
+\DeclareMathOperator{\Span}{Span}
+
+% Projective, Affine, and Algebraic Variety Spaces
 \renewcommand{\P}{\mathbb{P}}
 \newcommand{\A}{\mathbb{A}}
 \newcommand{\I}{\mathbb{I}}
 \newcommand{\Ip}{\mathbb{I}_p}
 \newcommand{\V}{\mathbb{V}}
+
+% Hyperbolic & Sphere spaces
+\newcommand{\Sph}{\mathbb{S}}
+\newcommand{\Hyp}{\mathbb{H}}
+
+% ==============================================================================
+% 2. ELEMENTARY & SYNTHETIC GEOMETRY
+% ==============================================================================
+% Segments, rays, arcs, lines, and angles
+\newcommand{\seg}[1]{\overline{#1}}
+\newcommand{\ray}[1]{\overrightarrow{#1}}
+\newcommand{\lin}[1]{\overleftrightarrow{#1}}
+\newcommand{\arc}[1]{\wideparen{#1}}
+\newcommand{\tri}{\triangle}
+\newcommand{\ang}{\angle}
+\newcommand{\measang}{\measuredangle}
+\newcommand{\sphang}{\sphericalangle}
+
+% Relations: parallel, perpendicular, congruent, similar
+\newcommand{\paral}{\parallel}
+\newcommand{\nparal}{\nparallel}
+\newcommand{\perpind}{\perp}
+\newcommand{\nperp}{\not\perp}
+\newcommand{\congr}{\cong}
+\newcommand{\simil}{\sim}
+
+% Coordinate / point notation & distances
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\area}{\operatorname{Area}}
+\newcommand{\vol}{\operatorname{Vol}}
+\newcommand{\perim}{\operatorname{Perim}}
+
+% ==============================================================================
+% 3. ANALYTIC & VECTOR GEOMETRY
+% ==============================================================================
+% Inner products, norms, and cross products
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\inner}{\langle}{\rangle}
+\newcommand{\cprod}{\times}
+\newcommand{\dprod}{\cdot}
+
+% Coordinates, affine spans, convex hulls
+\newcommand{\aff}{\operatorname{aff}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\cone}{\operatorname{cone}}
+\newcommand{\bary}{\operatorname{bary}}
+
+% ==============================================================================
+% 4. DIFFERENTIAL GEOMETRY & TOPOLOGY
+% ==============================================================================
+% Bundles, Tangent and Cotangent spaces
+\newcommand{\TM}{T M}
+\newcommand{\TstarM}{T^* M}
+\newcommand{\TpM}{T_p M}
+\newcommand{\TstarpM}{T^*_p M}
+\newcommand{\Tangent}{\operatorname{T}}
+
+% Vector fields, forms, and exterior algebra
+\newcommand{\VF}{\mathfrak{X}}
+\newcommand{\Forms}{\Omega}
+\newcommand{\extp}{\wedge}
+\newcommand{\wprod}{\wedge}
+\newcommand{\intprod}{\iota}
+\newcommand{\Lie}{\mathcal{L}}
+
+% Connections, curvature, and metrics
+\newcommand{\conn}{\nabla}
+\newcommand{\covd}{\nabla}
+\newcommand{\Riem}{\operatorname{Riem}}
+\newcommand{\Ric}{\operatorname{Ric}}
+\newcommand{\Scal}{\operatorname{Scal}}
+\newcommand{\Hess}{\operatorname{Hess}}
+\newcommand{\ddt}{\frac{\mathrm{d}}{\mathrm{d}t}}
+\newcommand{\diff}{\mathrm{d}}
+
+% Immersions, embeddings, and submanifolds
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\ind}{\operatorname{ind}}
+\newcommand{\genus}{\operatorname{genus}}
+\newcommand{\EulerChar}{\chi}
+
+% ==============================================================================
+% 5. ALGEBRAIC GEOMETRY & SCHEME THEORY
+% ==============================================================================
+% Morphisms and Core Functors / Operators
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\Coker}{Coker}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\ann}{ann}
+\DeclareMathOperator{\rank}{rank}
+
+% Functors and Schemes
+\newcommand{\mSpec}{\operatorname{mSpec}}
+\newcommand{\Proj}{\operatorname{Proj}}
+\newcommand{\Pic}{\operatorname{Pic}}
+\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\Div}{\operatorname{Div}}
+\newcommand{\Prin}{\operatorname{Prin}}
+\newcommand{\Supp}{\operatorname{Supp}}
+\newcommand{\Sing}{\operatorname{Sing}}
+\newcommand{\Reg}{\operatorname{Reg}}
+
+% Sheaves and Cohomology
+\newcommand{\sheaf}[1]{\mathcal{#1}}
+\newcommand{\OX}{\mathcal{O}_X}
+\newcommand{\OY}{\mathcal{O}_Y}
+\newcommand{\sheafHom}{\mathcal{H}\mathrm{om}}
+\newcommand{\sheafExt}{\mathcal{E}\mathrm{xt}}
+\newcommand{\sheafTor}{\mathcal{T}\mathrm{or}}
+\newcommand{\Hodge}{\star}
+
+% Morphisms and Invariants
+\newcommand{\Mor}{\operatorname{Mor}}
+\newcommand{\Grass}{\operatorname{Gr}}
+\newcommand{\Hilb}{\operatorname{Hilb}}
+
+% ==============================================================================
+% 6. TRANSFORMATION GROUPS & SYMMETRY
+% ==============================================================================
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\OO}{\operatorname{O}}
+\newcommand{\SO}{\operatorname{SO}}
+\newcommand{\U}{\operatorname{U}}
+\newcommand{\SU}{\operatorname{SU}}
+\newcommand{\Sp}{\operatorname{Sp}}
+\newcommand{\Isom}{\operatorname{Isom}}
+\newcommand{\Aff}{\operatorname{Aff}}
+\newcommand{\Sym}{\operatorname{Sym}}
 
 \endinput

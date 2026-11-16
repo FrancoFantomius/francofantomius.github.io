@@ -1,0 +1,176 @@
+%% FFanalysis.sty
+%% https://francofantomius.com/latex/FFanalysis.sty
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{FFanalysis}[2026/11/16 v1.0.0]
+
+% Required packages
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsfonts}
+\RequirePackage{mathtools}
+
+% ==============================================================================
+% 1. DIFFERENTIAL CALCULUS & DERIVATIVES
+% ==============================================================================
+% Upright differential operator (with optional spacing for integrals)
+\newcommand{\diff}{\mathrm{d}}
+\newcommand{\dd}{\,\mathrm{d}}
+
+% Derivatives (single & partial)
+\newcommand{\od}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\odd}[2]{\frac{\mathrm{d}^2 #1}{\mathrm{d} #2^2}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\pdm}[3]{\frac{\partial^2 #1}{\partial #2 \partial #3}}
+
+% Time derivatives & shorthand
+\newcommand{\ddt}{\frac{\mathrm{d}}{\mathrm{d}t}}
+\newcommand{\ddx}{\frac{\mathrm{d}}{\mathrm{d}x}}
+\newcommand{\pdt}{\frac{\partial}{\partial t}}
+\newcommand{\pdx}{\frac{\partial}{\partial x}}
+
+% Vector calculus differential operators
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\Div}{div}
+\DeclareMathOperator{\rot}{rot}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\Lap}{\Delta}
+
+% Jacobian and Hessian
+\DeclareMathOperator{\Jac}{Jac}
+\DeclareMathOperator{\Hess}{Hess}
+
+% Directional derivative
+\newcommand{\dirder}[2]{\partial_{#1} #2}
+
+% ==============================================================================
+% 2. LIMITS, ASYMPTOTICS & EXTREMA
+% ==============================================================================
+% Extrema with limits subscripting
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator*{\essinf}{ess\,inf}
+\DeclareMathOperator*{\osc}{osc}
+
+% Limits shorthand
+\newcommand{\clim}{\lim\limits}
+\newcommand{\limn}{\lim_{n \to \infty}}
+\newcommand{\limx}[1][x_0]{\lim_{x \to #1}}
+\newcommand{\liminfn}{\liminf_{n \to \infty}}
+\newcommand{\limsupn}{\limsup_{n \to \infty}}
+
+% Asymptotic Landau notation
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\littleo}{o}
+
+% ==============================================================================
+% 3. INTEGRAL CALCULUS & MEASURE THEORY
+% ==============================================================================
+% Principal value integral
+\def\Xint#1{\mathchoice
+   {\XXint\displaystyle\textstyle{#1}}%
+   {\XXint\textstyle\scriptstyle{#1}}%
+   {\XXint\scriptstyle\scriptscriptstyle{#1}}%
+   {\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+   \!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$}\vcenter{\hbox{$#2#3$}}\kern-.5\wd0}}
+\newcommand{\dashint}{\Xint-}
+\newcommand{\pvint}{\dashint}
+
+% Indicator function / Characteristic function
+\newcommand{\indf}{\mathbf{1}}
+\newcommand{\charf}{\chi}
+
+% Support & essential support
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\esssupp}{ess\,supp}
+
+% Standard integration shortcut over R or domains
+\newcommand{\intR}{\int_{-\infty}^{+\infty}}
+\newcommand{\intRn}{\int_{\mathbb{R}^n}}
+
+% ==============================================================================
+% 4. FUNCTION SPACES & DUALS
+% ==============================================================================
+% Continuous & differentiable functions
+\newcommand{\Cont}{\mathcal{C}}
+\newcommand{\Cc}{\mathcal{C}_{\mathrm{c}}}
+\newcommand{\Cinfty}{\mathcal{C}^\infty}
+\newcommand{\Ccinfty}{\mathcal{C}_{\mathrm{c}}^\infty}
+
+% Lebesgue, Sobolev & Hardy spaces
+\newcommand{\Lp}[1][p]{L^{#1}}
+\newcommand{\Linfty}{L^\infty}
+\newcommand{\Lploc}[1][p]{L^{#1}_{\mathrm{loc}}}
+\newcommand{\Lloc}{L^1_{\mathrm{loc}}}
+\newcommand{\Wkp}[2]{W^{#1,#2}}
+\newcommand{\Hk}[1][k]{H^{#1}}
+\newcommand{\Hone}{H^1}
+\newcommand{\Honezero}{H^1_0}
+
+% Schwartz space & Tempered distributions
+\newcommand{\Schwartz}{\mathcal{S}}
+\newcommand{\TempDist}{\mathcal{S}'}
+
+% Sequences spaces
+\newcommand{\lp}[1][p]{\ell^{#1}}
+\newcommand{\linfty}{\ell^\infty}
+
+% ==============================================================================
+% 5. FUNCTIONAL ANALYSIS & CONVERGENCE
+% ==============================================================================
+% Dual space and bidual
+\newcommand{\dual}[1]{{#1}^*}
+\newcommand{\bidual}[1]{{#1}^{**}}
+
+% Convergence arrows (weak, weak-star, uniform, almost everywhere)
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wstarto}{\overset{*}{\rightharpoonup}}
+\newcommand{\uto}{\rightrightarrows}
+\newcommand{\normto}{\xrightarrow{\|\cdot\|}}
+\newcommand{\aeconverge}{\xrightarrow{\text{a.e.}}}
+
+% Almost everywhere / almost surely phrases
+\newcommand{\ae}{\text{a.e.}}
+\newcommand{\as}{\text{a.s.}}
+
+% Spectrum and resolvent
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\sigmaop}{\sigma}
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\Res}{Res}
+
+% Fourier transform notations
+\newcommand{\Four}{\mathcal{F}}
+\newcommand{\invFour}{\mathcal{F}^{-1}}
+\newcommand{\fourier}[1]{\widehat{#1}}
+
+% ==============================================================================
+% 6. TOPOLOGY & METRIC SPACES
+% ==============================================================================
+% Interior, boundary, closure, distance, diameter
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\bd}{bd}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\diam}{diam}
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\boundary}{\partial}
+
+% Open and closed balls
+\newcommand{\ball}[2]{B\left(#1, #2\right)}
+\newcommand{\cball}[2]{\overline{B}\left(#1, #2\right)}
+
+% ==============================================================================
+% 7. COMPLEX ANALYSIS
+% ==============================================================================
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Arg}{Arg}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+
+% Holomorphic functions class
+\newcommand{\Hol}{\mathcal{H}\mathrm{ol}}
+
+\endinput
